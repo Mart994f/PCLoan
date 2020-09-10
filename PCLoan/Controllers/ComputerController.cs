@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PCLoan.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,11 +11,6 @@ namespace PCLoan.Controllers
     {
         // GET: Computer
         public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult LoginScreen()
         {
             return View();
         }
