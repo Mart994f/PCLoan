@@ -9,12 +9,12 @@
 <div id="loginbox" style="display:block">
     <div>
         <form name="login" action="" method="post">
-            <center>Brugernavn:</center>
             <div>
+                @Html.LabelFor(m => m.username)
                 <center>@Html.TextBoxFor(m => m.username, new { @class = "#formname"})</center>
             </div>
-            <center>Adgangskode:</center>
             <div>
+                @Html.LabelFor(m => m.password)
                 <center>@Html.PasswordFor(m => m.password, new { @class = "#formpass"})</center>
             </div>
             <div id="login-btn">
