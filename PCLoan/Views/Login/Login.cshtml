@@ -1,4 +1,5 @@
-﻿
+﻿@model PCLoan.Models.LoginModel
+
 @{
     ViewBag.Title = "Login Screen";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,11 +7,19 @@
 
 <h2>Log ind</h2>
 <div id="loginbox" style="display:block">
-    <form name="login" action="" method="post">
-        <center>Brugernavn:</center>
-        <center><input name="username" id="formname" size="14" placeholder="Brugernavn" /></center>
-        <center>Adgangskode:</center>
-        <center><input name="password" type="password" id="formpass" size="14" placeholder="Adgangskode" /></center>
-        <center><button id="login-btn">login</button></center>
-    </form>
+    <div>
+        <form name="login" action="" method="post">
+            <center>Brugernavn:</center>
+            <div>
+                <center>@Html.TextBoxFor(m => m.username, new { @class = "#formname"})</center>
+            </div>
+            <center>Adgangskode:</center>
+            <div>
+                <center>@Html.PasswordFor(m => m.password, new { @class = "#formpass"})</center>
+            </div>
+            <div id="login-btn">
+                <center><button type="submit">login</button></center>
+            </div>
+        </form>
+    </div>
 </div>
