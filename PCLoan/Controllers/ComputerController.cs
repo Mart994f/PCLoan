@@ -13,10 +13,5 @@ namespace PCLoan.Controllers
         {
             return View();
         }
-
-        public ActionResult LoginScreen()
-        {
-            return View();
-        }
     }
 }
