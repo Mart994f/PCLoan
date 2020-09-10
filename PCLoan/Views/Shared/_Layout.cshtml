@@ -3,21 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - ZBC PC Udlån</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="d-flex flex-column">
-        <div id="page-content">
-        <div class="container">
-            @RenderBody()
-        </div>
+<body>
+    <div class="container">
+        @RenderBody()
     </div>
-    <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
-        <div class="container text-center">
-            <small>&copy; @DateTime.Now.Year - My ASP.NET Application</small>
-        </div>
-    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
