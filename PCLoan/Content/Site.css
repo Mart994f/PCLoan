@@ -2,3 +2,33 @@
 body {
     height: 100%;
 }
+
+#page-content {
+    flex: 1 0 auto;
+}
+
+#loginbox {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+#formname {
+    width: 200px;
+    border-radius: 5px;
+    border-style: solid;
+}
+
+#formpass {
+    width: 200px;
+    border-radius: 5px;
+    border-style: solid;
+}
+
+#login-btn {
+    margin-top: 20px;
+    border-radius: 1px;
+    border-style: solid;
+    width: 65px;
+}
