@@ -9,7 +9,6 @@
     	CONSTRAINT FK_UserLoanTable
 	FOREIGN KEY (UserID)
 	REFERENCES [User] (ID),
-        PRIMARY KEY (ID),
         CONSTRAINT FK_ComputerLoanTable
     FOREIGN KEY (PCID)
     REFERENCES Computer(ID)
