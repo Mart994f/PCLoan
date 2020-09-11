@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.35\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -127,13 +130,13 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ComputerController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Data\DbDataAccess.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\Computer.cs" />
-    <Compile Include="Models\ComputerRepository.cs" />
-    <Compile Include="Models\StateRepository.cs" />
+    <Compile Include="Models\ComputerModel.cs" />
+    <Compile Include="Models\StateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
