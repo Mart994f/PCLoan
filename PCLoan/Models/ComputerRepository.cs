@@ -10,7 +10,7 @@ namespace PCLoan.Models
     {
         public List<Computer> GetAllComputers()
         {
-            
+            return null;
         }
     }
 }
