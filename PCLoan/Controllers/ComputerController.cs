@@ -14,5 +14,10 @@ namespace PCLoan.Controllers
         {
             return View();
         }
+
+        public ActionResult Confirm()
+        {
+            return View();
+        }
     }
 }

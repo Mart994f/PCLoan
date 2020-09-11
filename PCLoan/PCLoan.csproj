@@ -275,6 +275,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Computer\Index.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Computer\Confirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

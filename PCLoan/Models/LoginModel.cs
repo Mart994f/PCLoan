@@ -10,12 +10,15 @@ namespace PCLoan.Models
 {
     public class LoginModel
     {
-        [Display(Name="Indtast brugernavn:")]
+        [Required(ErrorMessage = "Husk at skrive et brugernavn")]
+        [Display(Name="Brugernavn:")]
         public string username { get; set; }
-        [Display(Name ="Indtast adgangskode:")]
+
+        [Required(ErrorMessage = "Husk at skrive en adgangskode")]
+        [Display(Name ="Adgangskode:")]
         public string password { get; set; }
 
-        public bool ValidateUser(string username, string password)
+        public bool ValidateUser()
         {
             bool _valid = false;
 
@@ -41,7 +44,7 @@ namespace PCLoan.Models
             return _valid;
         }
 
-        public string GetInformation(string username)
+        public string GetInformation()
         {
             string _fullName = null;
             // set up domain context using the default domain you're currently logged in 

@@ -8,16 +8,18 @@
 <h2>Log ind</h2>
 <div id="loginbox" style="display:block">
     <div>
-        @using{Html.BeginForm("Login", "Login", FormMethod.Post})
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
         <form name="login" action="" method="post">
             <div>
                 @Html.LabelFor(m => m.username)
                 <center>@Html.TextBoxFor(m => m.username, new { @class = "formname" })</center>
+                @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
             </div>
             <div>
                 @Html.LabelFor(m => m.password)
                 <center>@Html.PasswordFor(m => m.password, new { @class = "formpass" })</center>
+                @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
             </div>
             <div id="login-btn">
                 <center><button type="submit">login</button></center>

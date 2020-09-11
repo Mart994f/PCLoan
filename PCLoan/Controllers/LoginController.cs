@@ -19,16 +19,18 @@ namespace PCLoan.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(LoginModel model)
         {
-            PCLoan.Models.LoginModel login = new LoginModel();
-            login.GetInformation(username);
-            bool isValid = login.ValidateUser(username, password);
-            if (true)
+                bool isValid = model.ValidateUser();
+            if (isValid)
             {
-
+                model.GetInformation();
+                return RedirectToAction("Confirm", "Computer");
             }
-            return View();
+            else
+            {
+                return View();
+            }
         }
     }
 }
