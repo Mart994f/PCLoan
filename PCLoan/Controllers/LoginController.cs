@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PCLoan.Models;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.Protocols;
@@ -20,51 +21,12 @@ namespace PCLoan.Controllers
         [HttpPost]
         public ActionResult Login(string username, string password)
         {
-            bool ValidateUser()
+            PCLoan.Models.LoginModel login = new LoginModel();
+            login.GetInformation(username);
+            bool isValid = login.ValidateUser(username, password);
+            if (true)
             {
-                bool _valid = false;
 
-                LdapDirectoryIdentifier identifier = new LdapDirectoryIdentifier("10.255.1.1", 389);
-                LdapConnection connection = new LdapConnection(identifier)
-                {
-                    Credential = new System.Net.NetworkCredential(username, password)
-                };
-
-                try
-                {
-                    connection.Bind();
-                    PrincipalContext context = new PrincipalContext(ContextType.Domain, "10.255.1.1", username, password);
-                    UserPrincipal principal = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, username);
-                    _valid = true;
-                }
-
-                catch
-                {
-
-                }
-
-                return _valid;
-            }
-
-            string GetInformation()
-            {
-                string _fullName = null;
-                // set up domain context using the default domain you're currently logged in 
-                using (PrincipalContext context = new PrincipalContext(ContextType.Domain))
-                {
-                    // find a user
-                    UserPrincipal user = UserPrincipal.FindByIdentity(context, username);
-
-                    if (user != null)
-                    {
-                        // get the "DisplayName" property ("Fullname" is WinNT specific)
-                        _fullName = user.DisplayName;
-
-                        // do something here....        
-                    }
-                }
-
-                return _fullName;
             }
             return View();
         }
