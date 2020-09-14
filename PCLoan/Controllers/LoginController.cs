@@ -21,16 +21,22 @@ namespace PCLoan.Controllers
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
-                bool isValid = model.ValidateUser();
+            bool isValid = model.ValidateUser();
             if (isValid)
             {
                 model.GetInformation();
-                return RedirectToAction("Confirm", "Computer");
+
+                string requestName = Request.Cookies["action"].Value;
+                if (requestName == "loan")
+                {
+                    return RedirectToAction("Confirm", "Computer");
+                }
+                else if (requestName == "return")
+                {
+                    return RedirectToAction("Confirm", "Computer");
+                }
             }
-            else
-            {
-                return View();
-            }
+            return View();
         }
     }
 }
