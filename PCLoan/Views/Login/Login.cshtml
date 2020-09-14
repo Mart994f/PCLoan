@@ -10,21 +10,28 @@
     <div>
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
-        <form name="login" action="" method="post">
-            <div>
-                @Html.LabelFor(m => m.username)
-                <center>@Html.TextBoxFor(m => m.username, new { @class = "formname" })</center>
-                @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
-            </div>
-            <div>
-                @Html.LabelFor(m => m.password)
-                <center>@Html.PasswordFor(m => m.password, new { @class = "formpass" })</center>
-                @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
-            </div>
-            <div id="login-btn">
-                <center><button type="submit">login</button></center>
-            </div>
-        </form>
+            <form name="login" action="" method="post">
+                <div>
+                    @Html.LabelFor(m => m.username)
+                    <center>@Html.TextBoxFor(m => m.username, new { @class = "formname" })</center>
+                </div>
+                <div>
+                    @Html.LabelFor(m => m.password)
+                    <center>@Html.PasswordFor(m => m.password, new { @class = "formpass" })</center>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                    </div>
+                    <div>
+                        <!--Validation message for failed login, DONT specify which one is false!-->
+                    </div>
+                </div>
+                <div id="login-btn">
+                    <center><button type="submit">login</button></center>
+                </div>
+            </form>
         }
     </div>
 </div>

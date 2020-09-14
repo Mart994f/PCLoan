@@ -36,6 +36,7 @@ namespace PCLoan.Controllers
                     return RedirectToAction("Confirm", "Computer");
                 }
             }
+            ViewBag.FailedLogin = "Brugernavn eller adgangskode er forkert";
             return View();
         }
     }
