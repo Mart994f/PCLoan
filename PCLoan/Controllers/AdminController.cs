@@ -11,18 +11,95 @@ namespace PCLoan.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            IEnumerable<SelectListItem> states = DbDataAccess.GetData<StateModel>("GetStates", null)
-                .Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.State
-                });
-
             List<ComputerModel> computers = DbDataAccess.GetData<ComputerModel>("GetAllComputers", null).ToList();
-            computers.ForEach(c => c.states = states);
-            computers.Where(c => c.states. = c.SelectedState)
 
             return View(computers);
+        }
+
+        // GET: Admin/Details/5
+        public ActionResult Details(int id)
+        {
+            List<ComputerModel> computers = DbDataAccess.GetData<ComputerModel>("GetAllComputers", null).ToList();
+
+            ComputerModel computer = computers.Where(c => c.Id == id).First();
+
+            return View(computer);
+        }
+
+        // GET: Admin/Create
+        public ActionResult Create()
+        {
+            ComputerModel computer = new ComputerModel();
+
+            return View(computer);
+        }
+
+        // POST: Admin/Create
+        [HttpPost]
+        public ActionResult Create(FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Admin/Edit/5
+        public ActionResult Edit(int id)
+        {
+            List<ComputerModel> computers = DbDataAccess.GetData<ComputerModel>("GetAllComputers", null).ToList();
+
+            ComputerModel computer = computers.Where(c => c.Id == id).First();
+
+            return View(computer);
+        }
+
+        // POST: Admin/Edit/5
+        [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Admin/Delete/5
+        public ActionResult Delete(int id)
+        {
+            List<ComputerModel> computers = DbDataAccess.GetData<ComputerModel>("GetAllComputers", null).ToList();
+
+            ComputerModel computer = computers.Where(c => c.Id == id).First();
+
+            return View(computer);
+        }
+
+        // POST: Admin/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }

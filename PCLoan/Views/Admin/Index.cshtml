@@ -1,63 +1,47 @@
 ﻿@model IEnumerable<PCLoan.Models.ComputerModel>
 
 @{
-    ViewBag.Title = "Admin";
+    ViewBag.Title = "Admin List";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
+<div class="row mt-5">
     <div class="col-10">
-        <p class="h1 mt-4 font-weight-light">ZBC Computer Udlån - Administration</p>
+        <h2 class="h1 font-weight-light ml-3">ZBC Computer Udlån - Oversigt</h2>
     </div>
-    <div class="col-2 text-right">
-        <button class="btn btn-primary btn-lg mt-4" type="button" disabled onclick="">Tilføj Pc</button>
+    <div class="col-2">
+        <p class="text-right mt-2 mr-2">@Html.ActionLink("Tilføj Pc", "Create", null, new { @class = "btn btn-primary" })</p>
     </div>
 </div>
 
-<hr />
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.SelectedState)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.LendBy)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.LoanDate)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.ReturnDate)</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
 
-@foreach (var item in Model)
-{
-    <div class="row">
-        <div class="col-4">
-            <div class="row">
-                <div class="col-1">
-                    <p class="h4 font-weight-light py-1">@Html.DisplayFor(m => item.Id)</p>
-                </div>
-                <div class="col-11">
-                    @Html.TextBoxFor(m => item.Name, new { @class = "form-control" })
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="row">
-                <div class="col-3">
-                    @Html.LabelFor(m => item.SelectedState, new { @class = "h4 font-weight-normal py-1" })
-                </div>
-                <div class="col-9">
-                    @Html.DropDownListFor(m => item.SelectedState, new SelectList(item.states, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "State" })
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="row">
-                <div class="col-6 pr-1">
-                    @Html.LabelFor(m => item.LendBy, new { @class = "h4 font-weight-normal text-right py-1" })
-                </div>
-                <div class="col-6 pl-1">
-                    <p class = "h4 font-weight-light text-left py-1">@Html.DisplayFor(m => item.LendBy)</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="row">
-                <div class="col-5 offset-2">
-                    <button class="btn btn-success" type="button" disabled onclick="">Gem</button>
-                </div>
-                <div class="col-5">
-                    <button class="btn btn-danger" type="button" onclick="">Slet</button>
-                </div>
-            </div>
-        </div>
-    </div>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@item.States.FirstOrDefault(s => int.Parse(s.Value) == item.SelectedState).Text</td>
+                <td>@Html.DisplayFor(modelItem => item.LendBy)</td>
+                <td>@Html.DisplayFor(modelItem => item.LoanDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReturnDate)</td>
+                <td class="text-right">
+                    @Html.ActionLink("Rediger", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Detaljer", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                    @Html.ActionLink("Slet", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
