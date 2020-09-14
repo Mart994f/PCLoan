@@ -6,11 +6,10 @@ using System.Web.Mvc;
 
 namespace PCLoan.Models
 {
-    public class ComputerRepository
+    public class StateModel
     {
-        public List<Computer> GetAllComputers()
-        {
-            
-        }
+        public int Id { get; set; }
+
+        public string State { get; set; }
     }
 }
