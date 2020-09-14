@@ -14,5 +14,22 @@ namespace PCLoan.Controllers
         {
             return View();
         }
+
+        public ActionResult Confirm()
+        {
+            return View();
+        }
+        public ActionResult RedirectToLogin(string loanPc, string returnPc)
+        {
+            if (loanPc == "loanPc")
+            {
+                Response.Cookies["action"].Value = "loan";
+            }
+            else if (returnPc == "returnPc")
+            {
+                Response.Cookies["action"].Value = "return";
+            }
+            return RedirectToAction("Login", "Login");
+        }
     }
 }

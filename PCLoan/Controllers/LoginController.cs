@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PCLoan.Models;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.Protocols;
@@ -18,54 +19,24 @@ namespace PCLoan.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(LoginModel model)
         {
-            bool ValidateUser()
+            bool isValid = model.ValidateUser();
+            if (isValid)
             {
-                bool _valid = false;
+                model.GetInformation();
 
-                LdapDirectoryIdentifier identifier = new LdapDirectoryIdentifier("10.255.1.1", 389);
-                LdapConnection connection = new LdapConnection(identifier)
+                string requestName = Request.Cookies["action"].Value;
+                if (requestName == "loan")
                 {
-                    Credential = new System.Net.NetworkCredential(username, password)
-                };
-
-                try
-                {
-                    connection.Bind();
-                    PrincipalContext context = new PrincipalContext(ContextType.Domain, "10.255.1.1", username, password);
-                    UserPrincipal principal = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, username);
-                    _valid = true;
+                    return RedirectToAction("Confirm", "Computer");
                 }
-
-                catch
+                else if (requestName == "return")
                 {
-
+                    return RedirectToAction("Confirm", "Computer");
                 }
-
-                return _valid;
             }
-
-            string GetInformation()
-            {
-                string _fullName = null;
-                // set up domain context using the default domain you're currently logged in 
-                using (PrincipalContext context = new PrincipalContext(ContextType.Domain))
-                {
-                    // find a user
-                    UserPrincipal user = UserPrincipal.FindByIdentity(context, username);
-
-                    if (user != null)
-                    {
-                        // get the "DisplayName" property ("Fullname" is WinNT specific)
-                        _fullName = user.DisplayName;
-
-                        // do something here....        
-                    }
-                }
-
-                return _fullName;
-            }
+            ViewBag.FailedLogin = "Brugernavn eller adgangskode er forkert";
             return View();
         }
     }

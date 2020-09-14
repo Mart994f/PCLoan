@@ -33,3 +33,24 @@ body {
     border-radius: 1px;
     width: 65px;
 }
+
+.btn-loan {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    width: 350px;
+    height: 250px;
+}
+
+.btn-loan:hover {
+    color: #fff;
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-loan:focus, .btn-loan.focus {
+    color: #fff;
+    background-color: #218838;
+    border-color: #1e7e34;
+    box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, 0.5);
+}

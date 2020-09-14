@@ -6,3 +6,26 @@
 
 <h2>Index</h2>
 
+<div class="container d-flex h-100">
+    <div class="row align-self-center w-100">
+        <div class="col-12 mx-auto mb-5">
+            <p class="display-3 text-center">Hvad vil du?</p>
+        </div>
+    </div>
+</div>
+<div class="container d-flex h-100">
+    <div class="row align-self-center w-100">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="row">
+                <div class="col-6 mb-5 text-center">
+                    @Html.ActionLink("Udlån", "RedirectToLogin", "Computer", new { loanPc = "loanPc" }, new { @class = "btn-success display-3 p-3 text-decoration-none", @type = "submit" })
+                </div>
+                <div class="col-6 mb-5 text-center">
+                    @Html.ActionLink("Aflever", "RedirectToLogin", "Computer", new { returnPc = "returnPc"} , new { @class = "btn-danger display-3 p-3 text-decoration-none", @type = "submit" })
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
