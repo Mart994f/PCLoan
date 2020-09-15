@@ -24,7 +24,8 @@
                     <div>
                         @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
                     </div>
-                    <div>
+                    <div class="lgnfail text-danger">
+                        @ViewBag.FailedLogin
                         <!--Validation message for failed login, DONT specify which one is false!-->
                     </div>
                 </div>
