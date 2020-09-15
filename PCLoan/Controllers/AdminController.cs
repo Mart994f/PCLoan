@@ -1,5 +1,6 @@
 ﻿using PCLoan.Data;
 using PCLoan.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -36,11 +37,17 @@ namespace PCLoan.Controllers
 
         // POST: Admin/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ComputerModel model)
         {
+            if (!ModelState.IsValid)
+                return View();
+
             try
             {
-                // TODO: Add insert logic here
+                Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
+                parameters.Add("@name", model.Name);
+
+                DbDataAccess.SetData("CreateComputer", parameters);
 
                 return RedirectToAction("Index");
             }
@@ -62,15 +69,18 @@ namespace PCLoan.Controllers
 
         // POST: Admin/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, ComputerModel model)
         {
+            if (!ModelState.IsValid)
+                return View();
+
             try
             {
                 // TODO: Add update logic here
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
@@ -88,11 +98,14 @@ namespace PCLoan.Controllers
 
         // POST: Admin/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, ComputerModel model)
         {
             try
             {
-                // TODO: Add delete logic here
+                Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
+                parameters.Add("@id", id);
+
+                DbDataAccess.SetData("[DeavtivateComputer]", parameters);
 
                 return RedirectToAction("Index");
             }
