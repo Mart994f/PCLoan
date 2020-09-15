@@ -56,14 +56,20 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables" />
+    <Folder Include="Stored Pocedures" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="LoanTable.sql" />
-    <Build Include="State.sql" />
-    <Build Include="Computer.sql" />
-    <Build Include="User.sql" />
+    <Build Include="Tables\Computer.sql" />
+    <Build Include="Tables\LoanTable.sql" />
+    <Build Include="Tables\State.sql" />
+    <Build Include="Tables\User.sql" />
+    <Build Include="Stored Pocedures\GetAllComputers.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PCLoanDatabase.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Stored Pocedures\GetAllStates.sql" />
   </ItemGroup>
 </Project>

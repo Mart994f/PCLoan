@@ -1,66 +1,88 @@
 ﻿@model PCLoan.Models.ComputerModel
 
 @{
-    Layout = null;
+    ViewBag.Title = "Slet Pc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-    <div>
-        <h4>ComputerModel</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.SelectedState)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.SelectedState)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.LendBy)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.LendBy)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.LoanDate)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.LoanDate)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.ReturnDate)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.ReturnDate)
-            </dd>
-    
-        </dl>
+<div class="row mt-3">
+    <div class="col-6 offset-3">
+        <h3 class="text-center">Detaljer om @Html.DisplayFor(model => model.Name)</h3>
     </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-</body>
-</html>
+</div>
+<hr />
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="row">
+            <div class="col-6 text-right font-weight-bold">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div class="col-6">
+                @Html.DisplayFor(model => model.Name)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="row">
+            <div class="col-6 text-right font-weight-bold">
+                @Html.DisplayNameFor(model => model.SelectedState)
+            </div>
+            <div class="col-6">
+                @Html.DisplayFor(model => model.States.Find(s => int.Parse(s.Value) == model.SelectedState).Text)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="row">
+            <div class="col-6 text-right font-weight-bold">
+                @Html.DisplayNameFor(model => model.LendBy)
+            </div>
+            <div class="col-6">
+                @Html.DisplayFor(model => model.LendBy)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="row">
+            <div class="col-6 text-right font-weight-bold">
+                @Html.DisplayNameFor(model => model.LoanDate)
+            </div>
+            <div class="col-6">
+                @Html.DisplayFor(model => model.LoanDate)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="row">
+            <div class="col-6 text-right font-weight-bold">
+                @Html.DisplayNameFor(model => model.ReturnDate)
+            </div>
+            <div class="col-6">
+                @Html.DisplayFor(model => model.ReturnDate)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-6 offset-3">
+        <div class="row">
+            <div class="col-6 text-right">
+                @Html.ActionLink("Rediger", "Edit", new { id = Model.Id })
+            </div>
+            <div class="col-6">
+                @Html.ActionLink("Tilbage til oversigt", "Index")
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+</p>
+

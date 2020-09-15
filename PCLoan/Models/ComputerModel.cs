@@ -23,17 +23,19 @@ namespace PCLoan.Models
         [Display(Name = "Udlånt til")]
         public string LendBy { get; set; }
 
+        [DataType(DataType.Date)]
         [Display(Name = "Udlånt")]
-        [DisplayFormat(DataFormatString = "{0:D}")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? LoanDate { get; set; }
 
-        [Display(Name = "Afleværes")]
-        [DisplayFormat(DataFormatString = "{0:D}")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Afleværet")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? ReturnDate { get; set; }
 
         public ComputerModel()
         {
-            States = DbDataAccess.GetData<StateModel>("GetStates", null).Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.State }).ToList();
+            States = DbDataAccess.GetData<StateModel>("GetAllStates", null).Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.State }).ToList();
         }
     }
 }

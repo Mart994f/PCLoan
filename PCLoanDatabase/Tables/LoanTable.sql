@@ -1,15 +1,14 @@
 ﻿CREATE TABLE [dbo].[LoanTable]
 (
-	[ID] INT NOT NULL, 
+	[ID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
     [UserID] INT NOT NULL, 
     [PCID] INT NOT NULL, 
-    [Loan] DATETIME NULL, 
-    [Return] DATETIME NULL,
-        PRIMARY KEY (ID),
-    	CONSTRAINT FK_UserLoanTable
+    [Loan] DATE NOT NULL DEFAULT GETDATE(), 
+    [Return] DATE NULL,
+    CONSTRAINT FK_UserLoanTable
 	FOREIGN KEY (UserID)
 	REFERENCES [User] (ID),
-        CONSTRAINT FK_ComputerLoanTable
+    CONSTRAINT FK_ComputerLoanTable
     FOREIGN KEY (PCID)
     REFERENCES Computer(ID)
     

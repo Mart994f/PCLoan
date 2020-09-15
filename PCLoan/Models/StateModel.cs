@@ -11,9 +11,5 @@ namespace PCLoan.Models
         public int Id { get; set; }
 
         public string State { get; set; }
-        public List<Computer> GetAllComputers()
-        {
-            return null;
-        }
     }
 }
