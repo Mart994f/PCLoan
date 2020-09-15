@@ -1,4 +1,5 @@
-﻿using PCLoan.Models;
+﻿using PCLoan.Data;
+using PCLoan.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,17 @@ namespace PCLoan.Controllers
 
         public ActionResult Confirm()
         {
-            return View();
+            ConfirmModel model = new ConfirmModel();
+            string action = Request.Cookies["action"].Value;
+            if (action == "loan")
+            {
+                ViewBag.DropdownMessage = "Vælg udleveret PC";
+            }
+            else if (action == "return")
+            {
+                ViewBag.DropdownMessage = "Indlever din PC";
+            }
+            return View(model);
         }
         public ActionResult RedirectToLogin(string loanPc, string returnPc)
         {
