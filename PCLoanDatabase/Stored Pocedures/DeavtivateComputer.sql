@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[DeavtivateComputer]
-	@name NCHAR(20)
+	@id NCHAR(20)
 AS
-	UPDATE Computer SET Deactivated = 1 WHERE Name = @name;
+	UPDATE Computer SET Deactivated = 1 WHERE ID = @id;
 RETURN 0
