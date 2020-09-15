@@ -25,7 +25,7 @@ namespace PCLoan.Controllers
             if (isValid)
             {
                 model.GetInformation();
-
+                ViewBag.FailedLogin = null;
                 string requestName = Request.Cookies["action"].Value;
                 if (requestName == "loan")
                 {
