@@ -16,7 +16,7 @@ namespace PCLoan
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Admin", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Computer", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

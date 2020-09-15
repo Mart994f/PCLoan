@@ -29,6 +29,8 @@ namespace PCLoan.Controllers
             {
                 Response.Cookies["action"].Value = "return";
             }
+
+            Response.Cookies["action"].Expires.AddMinutes(10);
             return RedirectToAction("Login", "Login");
         }
     }
