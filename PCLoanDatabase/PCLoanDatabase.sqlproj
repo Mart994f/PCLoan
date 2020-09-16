@@ -58,6 +58,7 @@
     <Folder Include="Properties" />
     <Folder Include="Tables" />
     <Folder Include="Stored Pocedures" />
+    <Folder Include="Post-Deployment Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Computer.sql" />
@@ -77,5 +78,12 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Stored Pocedures\GetAllStates.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Post-Deployment Scripts\AddStates.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Post-Deployment Scripts\AddStates.sql" />
+    <None Include="Post-Deployment Scripts\AddComputers.sql" />
   </ItemGroup>
 </Project>

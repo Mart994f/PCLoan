@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[CreateComputer]
-	@name NCHAR(20)
+	@name NCHAR(20),
+	@state int
 AS
-	INSERT INTO Computer (Name, StateID, Deactivated) VALUES (@name, 1, 0);
+	INSERT INTO Computer (Name, StateID, Deactivated) VALUES (@name, @state, 0);
 RETURN 0

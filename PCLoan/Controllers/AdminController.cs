@@ -40,20 +40,21 @@ namespace PCLoan.Controllers
         public ActionResult Create(ComputerModel model)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(model);
 
             try
             {
                 Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
                 parameters.Add("@name", model.Name);
+                parameters.Add("@state", model.SelectedState);
 
                 DbDataAccess.SetData("CreateComputer", parameters);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(model);
             }
         }
 
@@ -72,7 +73,7 @@ namespace PCLoan.Controllers
         public ActionResult Edit(int id, ComputerModel model)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(model);
 
             try
             {
@@ -82,7 +83,7 @@ namespace PCLoan.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                return View(model);
             }
         }
 
@@ -109,9 +110,9 @@ namespace PCLoan.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(model);
             }
         }
     }

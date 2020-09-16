@@ -25,7 +25,14 @@ namespace PCLoan.Data
         {
             using (IDbConnection connection = new SqlConnection(GetConnectionString("Development")))
             {
-                return connection.Execute(procedure, data, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+                try
+                {
+                    return connection.Execute(procedure, data, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+                }
+                catch (System.Exception ex)
+                {
+                    throw;
+                }
             }
         }
     }
