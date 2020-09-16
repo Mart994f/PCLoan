@@ -30,6 +30,7 @@ namespace PCLoan.Controllers
             }
             return View(model);
         }
+
         public ActionResult RedirectToLogin(string loanPc, string returnPc)
         {
             if (loanPc == "loanPc")
