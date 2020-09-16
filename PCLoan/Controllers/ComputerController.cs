@@ -16,6 +16,7 @@ namespace PCLoan.Controllers
             return View();
         }
 
+        // GET: Computer/Confirm
         public ActionResult Confirm()
         {
             ConfirmModel model = new ConfirmModel();
@@ -30,6 +31,19 @@ namespace PCLoan.Controllers
             }
             return View(model);
         }
+
+
+        [HttpPost]
+        public ActionResult Confirm(ConfirmModel model)
+        {
+            List<ConfirmModel> computers = DbDataAccess.GetData<ConfirmModel>("GetAvailableComputers", null).ToList();
+
+
+            return View(model);
+        }
+
+        // GET: Login/Login
+
 
         public ActionResult RedirectToLogin(string loanPc, string returnPc)
         {
