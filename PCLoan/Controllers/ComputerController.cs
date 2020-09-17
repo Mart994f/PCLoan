@@ -23,7 +23,7 @@ namespace PCLoan.Controllers
             string action = Request.Cookies["action"].Value;
             if (action == "loan")
             {
-                ViewBag.DropdownMessage = "Vælg udleveret PC";
+                ViewBag.DropdownMessage = "Vælg en computer";
                 ViewBag.DropdownButton = "Udlån";
                 model.AvailableComputers = DbDataAccess.GetData<SelectComputerModel>("GetAvailableComputers", null).Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name }).ToList();
             }
@@ -38,7 +38,13 @@ namespace PCLoan.Controllers
             return View(model);
         }
 
+        /*
+        [HttpPost]
+        public ActionResult Confirm()
+        {
 
+        }
+        */
 
         // GET: Login/Login
         public ActionResult RedirectToLogin(string loanPc, string returnPc)
