@@ -4,11 +4,13 @@
     ViewBag.Title = "Confirm";
 }
 
-<div class="container d-flex h-100">
+<div class="d-flex h-100">
     <div class="row align-self-center w-100">
         <div class="col-12 mx-auto mb-5">
-            <p class="display-3 text-center">Vælg din PC her:</p>
+            <center><h2 class="display-3">@ViewBag.DropdownMessage</h2></center>
+            <p>Velkommen, @Request.Cookies["username"].Value</p>
             @Html.DropDownListFor(model => model.SelectedComputer, new SelectList(Model.AvailableComputers, "Value", "Text"), (string)ViewBag.DropdownMessage, htmlAttributes: new { @class = "form-control" })
+            <button>@ViewBag.DropdownButton</button>
         </div>
     </div>
 </div>

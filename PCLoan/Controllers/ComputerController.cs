@@ -24,27 +24,23 @@ namespace PCLoan.Controllers
             if (action == "loan")
             {
                 ViewBag.DropdownMessage = "Vælg udleveret PC";
+                ViewBag.DropdownButton = "Udlån";
+                model.AvailableComputers = DbDataAccess.GetData<SelectComputerModel>("GetAvailableComputers", null).Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name }).ToList();
             }
             else if (action == "return")
             {
                 ViewBag.DropdownMessage = "Indlever din PC";
+                ViewBag.DropdownButtong = "Aflever";
+                Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
+                parameters.Add("@username", Request.Cookies["username"].Value);
+                model.AvailableComputers = DbDataAccess.GetData<SelectComputerModel>("GetLentComputer", parameters).Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name }).ToList();
             }
             return View(model);
         }
 
 
-        [HttpPost]
-        public ActionResult Confirm(ConfirmModel model)
-        {
-            List<ConfirmModel> computers = DbDataAccess.GetData<ConfirmModel>("GetAvailableComputers", null).ToList();
-
-
-            return View(model);
-        }
 
         // GET: Login/Login
-
-
         public ActionResult RedirectToLogin(string loanPc, string returnPc)
         {
             if (loanPc == "loanPc")

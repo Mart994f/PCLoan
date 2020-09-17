@@ -27,6 +27,7 @@ namespace PCLoan.Controllers
                 model.GetInformation();
                 ViewBag.FailedLogin = null;
                 string requestName = Request.Cookies["action"].Value;
+                Response.Cookies["username"].Value = model.username.ToString();
                 if (requestName == "loan")
                 {
                     return RedirectToAction("Confirm", "Computer");
