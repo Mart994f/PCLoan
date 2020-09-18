@@ -6,31 +6,40 @@
 }
 
 <h2>Log ind</h2>
-<div id="loginbox" style="display:block">
+<div style="display:block">
     <div>
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
             <form name="login" action="" method="post">
-                <div>
-                    @Html.LabelFor(m => m.username)
-                    <center>@Html.TextBoxFor(m => m.username, new { @class = "formname" })</center>
-                </div>
-                <div>
-                    @Html.LabelFor(m => m.password)
-                    <center>@Html.PasswordFor(m => m.password, new { @class = "formpass" })</center>
-                    <div>
-                        @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
-                    </div>
-                    <div>
-                        @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="lgnfail text-danger">
-                        @ViewBag.FailedLogin
-                        <!--Validation message for failed login, DONT specify which one is false!-->
+                <div class="row">
+                    <div class="col-4 offset-4 form-group">
+                        @Html.LabelFor(m => m.username)
+                        @Html.TextBoxFor(m => m.username, new { @class = "formname form-control" })
                     </div>
                 </div>
-                <div id="login-btn">
-                    <center><button type="submit">login</button></center>
+                <div class="row">
+                    <div class="col-4 offset-4 form-group">
+                        @Html.LabelFor(m => m.password)
+                        @Html.PasswordFor(m => m.password, new { @class = "formpass form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 offset-4">
+                        <div>
+                            @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-4 offset-4">
+                        <div class="text-danger">
+                            @ViewBag.FailedLogin
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 offset-4">
+                        <button class="btn btn-primary" type="submit">Log ind</button>
+                    </div>
                 </div>
             </form>
         }
