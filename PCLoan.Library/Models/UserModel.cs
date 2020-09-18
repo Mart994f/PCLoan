@@ -1,10 +1,10 @@
-﻿using PCLoan.Library.Enums;
+﻿using PCLoan.Logic.Library.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.DirectoryServices.AccountManagement;
 using System.Security;
 
-namespace PCLoan.Library.Models
+namespace PCLoan.Logic.Library.Models
 {
     /// <summary>
     /// A model representing a user.
@@ -27,7 +27,7 @@ namespace PCLoan.Library.Models
         /// The users password.
         /// </summary>
         [NotMapped]
-        public SecureString Password { get; set; }
+        public string Password { get; set; }
 
         /// <summary>
         /// If the user is authenticated.

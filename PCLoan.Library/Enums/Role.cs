@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PCLoan.Library.Enums
+namespace PCLoan.Logic.Library.Enums
 {
     public enum Role
     {
-        Developer = 1,
-        Employee = 2,
-        Student = 3
+        Employee = 1,
+        Student
     }
 }

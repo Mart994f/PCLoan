@@ -1,6 +1,6 @@
-﻿using PCLoan.Library.Models;
+﻿using PCLoan.Logic.Library.Models;
 
-namespace PCLoan.Library.Authentication
+namespace PCLoan.Logic.Library.Authentication
 {
     public interface IAuthentication
     {
