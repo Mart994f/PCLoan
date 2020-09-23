@@ -9,9 +9,9 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PCLoan.Database", "PCLoan.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PCLoan.Logic.Library", "PCLoan.Library\PCLoan.Logic.Library.csproj", "{24ED15EC-9DA1-487C-AED7-66E5D3F586B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCLoan.Data.Library", "PCLoan.Data.Library\PCLoan.Data.Library.csproj", "{9342BA11-94D7-43E8-AF8E-2A82472434C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PCLoan.Data.Library", "PCLoan.Data.Library\PCLoan.Data.Library.csproj", "{9342BA11-94D7-43E8-AF8E-2A82472434C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCLoan.Presentation.Web", "PCLoan.Presentation.Web\PCLoan.Presentation.Web.csproj", "{A3EF5E51-E054-490D-835E-11D1A521266C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PCLoan.Presentation.Web", "PCLoan.Presentation.Web\PCLoan.Presentation.Web.csproj", "{A3EF5E51-E054-490D-835E-11D1A521266C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

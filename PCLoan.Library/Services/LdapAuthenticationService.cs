@@ -5,12 +5,9 @@ using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.Protocols;
 using System.Net;
 
-namespace PCLoan.Logic.Library.Authentication
+namespace PCLoan.Logic.Library.Services
 {
-    /// <summary>
-    /// Authenticates a user against Microsoft Active Directory Domain Services with LDAP request.
-    /// </summary>
-    public class LdapAuthentication : IAuthentication
+    public class LdapAuthenticationService : IAuthenticationService
     {
         #region Private Fields
 
@@ -32,7 +29,7 @@ namespace PCLoan.Logic.Library.Authentication
         /// <summary>
         /// The logger for logging.
         /// </summary>
-        private ILogger<LdapAuthentication> _logger;
+        private ILogger<LdapAuthenticationService> _logger;
 
         #endregion
 
@@ -42,62 +39,61 @@ namespace PCLoan.Logic.Library.Authentication
 
         #region Constructors
 
-        public LdapAuthentication(ILogger<LdapAuthentication> logger)
+        public LdapAuthenticationService(ILogger<LdapAuthenticationService> logger)
         {
-            _logger = logger;
             _ldapConnection = new LdapConnection(new LdapDirectoryIdentifier("10.255.1.1", 389));
+            _logger = logger;
         }
 
         #endregion
 
         #region Public Methods
 
-        /// <summary>
-        /// Authenticate a user.
-        /// </summary>
-        /// <param name="user">The <see cref="UserModel"/> to authenticate</param>
-        /// <returns>An updated <see cref="UserModel"/></returns>
-        public UserModel AuthenticateUser(UserModel user)
+        #endregion
+
+        #region Internal Methods
+
+        public UserModelDTO AuthenticateUser(UserModelDTO model)
         {
             // Credentials for password-based authentication, used for the LDAP request
-            _ldapConnection.Credential = new NetworkCredential(user.UserName, user.Password);
+            _ldapConnection.Credential = new NetworkCredential(model.UserName, model.Password);
 
             try
             {
                 // Log information about authenticate
-                _logger?.LogInformation("Trying to authenticate user {Username}", user.UserName);
+                _logger?.LogInformation("Trying to authenticate user {Username}", model.UserName);
 
                 // Bind to the LDAP server
                 _ldapConnection.Bind();
 
-                _principalContext = new PrincipalContext(ContextType.Domain, "10.255.1.1", user.UserName, user.Password);
+                _principalContext = new PrincipalContext(ContextType.Domain, "10.255.1.1", model.UserName, model.Password);
 
                 // Requesting the userPrincipal from the Active Directory Domain Services, searching by SamAccountName
-                _userPrincipal = UserPrincipal.FindByIdentity(_principalContext, IdentityType.SamAccountName, user.UserName);
+                _userPrincipal = UserPrincipal.FindByIdentity(_principalContext, IdentityType.SamAccountName, model.UserName);
 
                 // If the user exists..
                 if (_userPrincipal != null)
                 {
                     // set the user to authenticated..
-                    user.Authenticated = true;
+                    model.Authenticated = true;
 
                     // and save the user principal for authorization
-                    user.UserPrincipal = _userPrincipal;
+                    model.UserPrincipal = _userPrincipal;
 
                     // Log that the user has been authenticated
-                    _logger?.LogInformation("The user {Username} has been authenticate", user.UserName);
+                    _logger?.LogInformation("The user {Username} has been authenticate", model.UserName);
                 }
 
                 // Return the modified userModel
-                return user;
+                return model;
             }
             catch (Exception ex)
             {
                 // Log that there has been an error..
-                _logger?.LogError(ex, "An exception was caught while trying to authenticate user {Username}", user.UserName);
+                _logger?.LogError(ex, "An exception was caught while trying to authenticate user {Username}", model.UserName);
 
                 // and return the unmodified userModel
-                return user;
+                return model;
             }
             finally
             {

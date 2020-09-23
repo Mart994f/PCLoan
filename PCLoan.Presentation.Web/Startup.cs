@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PCLoan.Logic.Library.Controllers;
+using PCLoan.Logic.Library.Services;
 
 namespace PCLoan.Presentation.Web
 {
@@ -24,6 +22,11 @@ namespace PCLoan.Presentation.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<ILoginController, LdapLoginController>();
+            services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
+            services.AddScoped<IAuthorizationService, LdapAuthorizationService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +53,7 @@ namespace PCLoan.Presentation.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=login}/{action=login}/{id?}");
             });
         }
     }

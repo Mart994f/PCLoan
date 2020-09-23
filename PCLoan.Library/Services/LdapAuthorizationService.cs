@@ -2,15 +2,13 @@
 using PCLoan.Logic.Library.Enums;
 using PCLoan.Logic.Library.Models;
 using System;
-using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.Protocols;
 using System.Net;
-using System.Text;
 
-namespace PCLoan.Logic.Library.Authorization
+namespace PCLoan.Logic.Library.Services
 {
-    class LdapAuthorization : IAuthorization
+    public class LdapAuthorizationService : IAuthorizationService
     {
         #region Private Fields
 
@@ -27,7 +25,7 @@ namespace PCLoan.Logic.Library.Authorization
         /// <summary>
         /// The logger for logging.
         /// </summary>
-        private ILogger<LdapAuthorization> _logger;
+        private ILogger<LdapAuthenticationService> _logger;
 
         #endregion
 
@@ -37,62 +35,61 @@ namespace PCLoan.Logic.Library.Authorization
 
         #region Constructors
 
-        public LdapAuthorization(ILogger<LdapAuthorization> logger)
+        public LdapAuthorizationService(ILogger<LdapAuthenticationService> logger)
         {
-            _logger = logger;
             _ldapConnection = new LdapConnection(new LdapDirectoryIdentifier("10.255.1.1", 389));
+            _logger = logger;
         }
 
         #endregion
 
         #region Public Methods
 
-        /// <summary>
-        /// Authorize a user
-        /// </summary>
-        /// <param name="user">The <see cref="UserModel"/> to authorize</param>
-        /// <returns>An updated <see cref="UserModel"/></returns>
-        public UserModel AuthorizeUser(UserModel user)
+        #endregion
+
+        #region Internal Methods
+
+        public UserModelDTO AuthorizeUser(UserModelDTO model)
         {
             // Credentials for password-based authentication, used for the LDAP request
-            _ldapConnection.Credential = new NetworkCredential(user.UserName, user.Password);
+            _ldapConnection.Credential = new NetworkCredential(model.UserName, model.Password);
 
             try
             {
                 // Log information about authorizing
-                _logger?.LogInformation("Trying to authorize user {user.Username}", user.UserName);
+                _logger?.LogInformation("Trying to authorize user {user.Username}", model.UserName);
 
                 // Bind to the LDAP server
                 _ldapConnection.Bind();
 
-                _principalContext = new PrincipalContext(ContextType.Domain, "10.255.1.1", user.UserName, user.Password);
+                _principalContext = new PrincipalContext(ContextType.Domain, "10.255.1.1", model.UserName, model.Password);
 
                 // If the user is member of "ZBC-Ansatte(Alle)",
-                if (user.UserPrincipal != null && user.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "ZBC-Ansatte(Alle)"))
+                if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "ZBC-Ansatte(Alle)"))
                 {
                     // then give the user a role of employee
-                    user.Role = Role.Employee;
+                    model.Role = Role.Employee;
                 }
                 // Else if the user is member of "zbc_alle_elever",
-                else if (user.UserPrincipal != null && user.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "zbc_alle_elever"))
+                else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "zbc_alle_elever"))
                 {
                     // then give the user a role of student
-                    user.Role = Role.Student;
+                    model.Role = Role.Student;
                 }
 
                 // Log that the user has been authorized
-                _logger?.LogInformation("The user {user.Username} has been authorized as {user.Role}", user);
+                _logger?.LogInformation("The user {Username} has been authorized as {Role}", new object[] { model.UserName, model.Role });
 
                 // Return the modified userModel
-                return user;
+                return model;
             }
             catch (Exception ex)
             {
                 // Log that there has been an error..
-                _logger?.LogError(ex, "An exception was caught while trying to authorize user {Username}", user.UserName);
+                _logger?.LogError(ex, "An exception was caught while trying to authorize user {Username}", model.UserName);
 
                 // and return the unmodified userModel
-                return user;
+                return model;
             }
             finally
             {
