@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Logic.Library.Services;
 
@@ -14,6 +15,8 @@ namespace PCLoan.Logic.Library.Controllers
 
         private ILogger<LdapLoginController> _logger;
 
+        private IMapper _mapper;
+
         #endregion
 
         #region Public Properties
@@ -22,7 +25,7 @@ namespace PCLoan.Logic.Library.Controllers
 
         #region Constructors
 
-        public LdapLoginController(IAuthenticationService authenticationService, IAuthorizationService authorizationService, ILogger<LdapLoginController> logger)
+        public LdapLoginController(IAuthenticationService authenticationService, IAuthorizationService authorizationService, ILogger<LdapLoginController> logger, IMapper mapper)
         {
             _authenticationService = authenticationService;
             _authorizationService = authorizationService;
@@ -41,6 +44,7 @@ namespace PCLoan.Logic.Library.Controllers
                 return model;
 
             model = _authorizationService.AuthorizeUser(model);
+
 
             model.Password = string.Empty;
 

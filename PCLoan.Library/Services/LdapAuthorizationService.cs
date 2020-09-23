@@ -45,10 +45,6 @@ namespace PCLoan.Logic.Library.Services
 
         #region Public Methods
 
-        #endregion
-
-        #region Internal Methods
-
         public UserModelDTO AuthorizeUser(UserModelDTO model)
         {
             // Credentials for password-based authentication, used for the LDAP request
@@ -57,7 +53,7 @@ namespace PCLoan.Logic.Library.Services
             try
             {
                 // Log information about authorizing
-                _logger?.LogInformation("Trying to authorize user {user.Username}", model.UserName);
+                _logger?.LogInformation("Trying to authorize user {Username}", model.UserName);
 
                 // Bind to the LDAP server
                 _ldapConnection.Bind();

@@ -31,7 +31,8 @@ namespace PCLoan.Presentation.Web.Controllers
             if (ModelState.IsValid)
             {
                 model = _mapper.Map<UserModel>(_loginController.LoginUser(_mapper.Map<UserModelDTO>(model)));
-                return Json(model);
+                if (model.Authenticated)
+                    return Json(model);
             }
 
             return View(model);

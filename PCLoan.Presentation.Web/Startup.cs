@@ -26,7 +26,6 @@ namespace PCLoan.Presentation.Web
             services.AddScoped<ILoginController, LdapLoginController>();
             services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
             services.AddScoped<IAuthorizationService, LdapAuthorizationService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
