@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PCLoan.Presentation.Web.Enums
+﻿namespace PCLoan.Presentation.Web.Enums
 {
-    public enum Role
+    public static class Role
     {
-        Employee = 1,
-        Student
+        public const string Employee = "Employee";
+
+        public const string Student = "Student";
     }
 }

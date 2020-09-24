@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PCLoan.Logic.Library.Enums
+﻿namespace PCLoan.Logic.Library.Enums
 {
-    public enum Role
+    public static class Role
     {
-        Employee = 1,
-        Student
+        public const string Employee = "Employee";
+
+        public const string Student = "Student";
     }
 }

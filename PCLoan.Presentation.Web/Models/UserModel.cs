@@ -1,5 +1,4 @@
-﻿using PCLoan.Presentation.Web.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PCLoan.Presentation.Web.Models
 {
@@ -34,6 +33,11 @@ namespace PCLoan.Presentation.Web.Models
         /// <summary>
         /// The role of the user.
         /// </summary>
-        public Role? Role { get; set; } = null;
+        public string Role { get; set; } = null;
+
+        /// <summary>
+        /// The JWS for the user once authenticated & authorized
+        /// </summary>
+        public string Token { get; set; } = null;
     }
 }
