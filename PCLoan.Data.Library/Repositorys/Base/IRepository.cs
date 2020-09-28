@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PCLoan.Data.Library
+namespace PCLoan.Data.Library.Repositorys
 {
     public interface IRepository<T> where T : class
     {

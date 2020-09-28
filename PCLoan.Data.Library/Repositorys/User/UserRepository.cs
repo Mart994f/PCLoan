@@ -4,7 +4,7 @@ using PCLoan.Data.Library.Models;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace PCLoan.Data.Library
+namespace PCLoan.Data.Library.Repositorys
 {
     public class UserRepository : Repository<UserModelDAO>, IUserRepository
     {
@@ -47,6 +47,17 @@ namespace PCLoan.Data.Library
             using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
             {
                 return connection.ExecuteScalar<bool>("UserExist", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+            }
+        }
+
+        public string GetUsernameById(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@Id", id);
+
+            using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                return connection.ExecuteScalar<string>("GetUsernameById", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 10);
             }
         }
 

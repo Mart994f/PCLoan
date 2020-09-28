@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using PCLoan.Data.Library;
+using PCLoan.Data.Library.Repositorys;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Services;
 using System.Text;
@@ -28,8 +28,15 @@ namespace PCLoan.Presentation.Web
             services.AddControllersWithViews();
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ILoginController, LdapLoginController>();
+            services.AddScoped<IAdminController, AdminController>();
+
             services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
             services.AddScoped<IAuthorizationService, LdapAuthorizationService>();
+
+            services.AddScoped<IComputerRepository, ComputerRepository>();
+            services.AddScoped<ILoanRepository, LoanRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
+            services.AddScoped<IStateRepository, StateRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings")["Secret"]);
@@ -51,6 +58,7 @@ namespace PCLoan.Presentation.Web
                         ValidateAudience = false
                     };
                 });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,7 +85,7 @@ namespace PCLoan.Presentation.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=login}/{action=login}/{id?}");
+                    pattern: "{controller=admin}/{action=index}/{id?}");
             });
         }
     }

@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 
-namespace PCLoan.Data.Library
+namespace PCLoan.Data.Library.Repositorys
 {
     public class Repository<T> : IRepository<T> where T : class
     {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using PCLoan.Logic.Library.Enums;
 using PCLoan.Logic.Library.Models;
 using System;
 using System.DirectoryServices.AccountManagement;
@@ -8,7 +7,7 @@ using System.Net;
 
 namespace PCLoan.Logic.Library.Services
 {
-    public class LdapAuthorizationService : IAuthorizationService
+    public class LdapAuthenticationService : IAuthenticationService
     {
         #region Private Fields
 
@@ -23,6 +22,11 @@ namespace PCLoan.Logic.Library.Services
         private PrincipalContext _principalContext;
 
         /// <summary>
+        /// The <see cref="UserPrincipal"/> found by SamAccountName on the LDAP server.
+        /// </summary>
+        private UserPrincipal _userPrincipal;
+
+        /// <summary>
         /// The logger for logging.
         /// </summary>
         private ILogger<LdapAuthenticationService> _logger;
@@ -35,7 +39,7 @@ namespace PCLoan.Logic.Library.Services
 
         #region Constructors
 
-        public LdapAuthorizationService(ILogger<LdapAuthenticationService> logger)
+        public LdapAuthenticationService(ILogger<LdapAuthenticationService> logger)
         {
             _ldapConnection = new LdapConnection(new LdapDirectoryIdentifier("10.255.1.1", 389));
             _logger = logger;
@@ -45,42 +49,36 @@ namespace PCLoan.Logic.Library.Services
 
         #region Public Methods
 
-        public UserModelDTO AuthorizeUser(UserModelDTO model)
+        public UserModelDTO AuthenticateUser(UserModelDTO model)
         {
             // Credentials for password-based authentication, used for the LDAP request
             _ldapConnection.Credential = new NetworkCredential(model.UserName, model.Password);
 
             try
             {
-                // Log information about authorizing
-                _logger?.LogInformation("Trying to authorize user {Username}", model.UserName);
+                // Log information about authenticate
+                _logger?.LogInformation("Trying to authenticate user {Username}", model.UserName);
 
                 // Bind to the LDAP server
                 _ldapConnection.Bind();
 
                 _principalContext = new PrincipalContext(ContextType.Domain, "10.255.1.1", model.UserName, model.Password);
 
-                // If the user is member of "ZBC-Ansatte(Alle)",
-                if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "ZBC-Ansatte(Alle)"))
-                {
-                    // then give the user a role of employee
-                    model.Role = Role.Employee;
-                }
-                // Else if the user is member of "skp_it_slagelse",
-                else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "skp_it_slagelse"))
-                {
-                    // then give the user a role of Administrator
-                    model.Role = Role.Administrator;
-                }
-                // Else if the user is member of "zbc_alle_elever",
-                else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "zbc_alle_elever"))
-                {
-                    // then give the user a role of student
-                    model.Role = Role.Student;
-                }
+                // Requesting the userPrincipal from the Active Directory Domain Services, searching by SamAccountName
+                _userPrincipal = UserPrincipal.FindByIdentity(_principalContext, IdentityType.SamAccountName, model.UserName);
 
-                // Log that the user has been authorized
-                _logger?.LogInformation("The user {Username} has been authorized as {Role}", new object[] { model.UserName, model.Role });
+                // If the user exists..
+                if (_userPrincipal != null)
+                {
+                    // set the user to authenticated..
+                    model.Authenticated = true;
+
+                    // and save the user principal for authorization
+                    model.UserPrincipal = _userPrincipal;
+
+                    // Log that the user has been authenticated
+                    _logger?.LogInformation("The user {Username} has been authenticate", model.UserName);
+                }
 
                 // Return the modified userModel
                 return model;
@@ -88,7 +86,7 @@ namespace PCLoan.Logic.Library.Services
             catch (Exception ex)
             {
                 // Log that there has been an error..
-                _logger?.LogError(ex, "An exception was caught while trying to authorize user {Username}", model.UserName);
+                _logger?.LogError(ex, "An exception was caught while trying to authenticate user {Username}", model.UserName);
 
                 // and return the unmodified userModel
                 return model;

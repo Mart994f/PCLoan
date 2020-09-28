@@ -66,11 +66,12 @@
     <Build Include="Tables\Loan.sql" />
     <Build Include="Tables\State.sql" />
     <Build Include="Tables\User.sql" />
-    <Build Include="Stored Pocedures\DeavtivateComputer.sql" />
-    <Build Include="Stored Pocedures\ReturnLoan.sql" />
     <Build Include="Stored Pocedures\GetAvailableComputers.sql" />
     <Build Include="Stored Pocedures\UserExist.sql" />
     <Build Include="Stored Pocedures\GetUserIdByName.sql" />
+    <Build Include="Tables\Log.sql" />
+    <Build Include="Stored Pocedures\GetAllComputersWithCurrentLoan.sql" />
+    <Build Include="Stored Pocedures\GetUsernameById.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PCLoanDatabase.refactorlog" />

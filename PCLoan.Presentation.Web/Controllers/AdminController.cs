@@ -1,26 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PCLoan.Data.Library;
+using PCLoan.Logic.Library.Controllers;
+using PCLoan.Presentation.Web.Models;
+using System.Collections.Generic;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
     public class AdminController : Controller
     {
+        private IAdminController _adminController;
 
+        private IMapper _mapper;
 
-        public AdminController()
+        public AdminController(IAdminController adminController, IMapper mapper)
         {
-
+            _adminController = adminController;
+            _mapper = mapper;
         }
 
         // GET: AdminController
         public ActionResult Index()
         {
-            return View();
+            IEnumerable<ComputerModel> models = _mapper.Map<IEnumerable<ComputerModel>>(_adminController.GetAllComputersWithCurrentLoan());
+
+            return View(models);
         }
 
         // GET: AdminController/Details/5
@@ -38,7 +41,7 @@ namespace PCLoan.Presentation.Web.Controllers
         // POST: AdminController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ComputerModel model)
         {
             try
             {
@@ -59,7 +62,7 @@ namespace PCLoan.Presentation.Web.Controllers
         // POST: AdminController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, ComputerModel model)
         {
             try
             {
@@ -80,7 +83,7 @@ namespace PCLoan.Presentation.Web.Controllers
         // POST: AdminController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, ComputerModel model)
         {
             try
             {

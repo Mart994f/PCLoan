@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using PCLoan.Data.Library;
+using PCLoan.Data.Library.Repositorys;
 using PCLoan.Data.Library.Models;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Logic.Library.Services;
@@ -89,7 +89,7 @@ namespace PCLoan.Logic.Library.Controllers
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
+                Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, model.UserName),
                     new Claim(ClaimTypes.Role, model.Role)

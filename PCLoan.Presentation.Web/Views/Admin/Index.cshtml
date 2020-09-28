@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PCLoan.Presentation.Web.Models.ComputerModel>
+
+@{
+    ViewBag.Title = "Admin List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-5">
+    <div class="col-10">
+        <h2 class="h1 font-weight-light ml-3">ZBC Computer Udlån - Oversigt</h2>
+    </div>
+    <div class="col-2">
+        <p class="text-right mt-2 mr-2">@Html.ActionLink("Tilføj Pc", "Create", null, new { @class = "btn btn-primary" })</p>
+    </div>
+</div>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.StateId)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.LendBy)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.LoanDate)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.ReturnedDate)</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.StateId)</td>
+                <td>@Html.DisplayFor(modelItem => item.LendBy)</td>
+                <td>@Html.DisplayFor(modelItem => item.LoanDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReturnedDate)</td>
+                <td class="text-right">
+                    @Html.ActionLink("Rediger", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Detaljer", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                    @Html.ActionLink("Slet", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

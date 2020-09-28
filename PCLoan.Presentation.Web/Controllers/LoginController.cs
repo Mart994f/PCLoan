@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Models;
-using PCLoan.Presentation.Web.Enums;
 using PCLoan.Presentation.Web.Models;
 
 namespace PCLoan.Presentation.Web.Controllers
