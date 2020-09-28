@@ -1,4 +1,4 @@
-﻿namespace PCLoan.Logic.Library.Enums
+﻿namespace PCLoan.Presentation.Web.Enums
 {
     public static class Role
     {
