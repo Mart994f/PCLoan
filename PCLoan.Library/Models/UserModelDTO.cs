@@ -1,5 +1,4 @@
-﻿using PCLoan.Logic.Library.Enums;
-using System.DirectoryServices.AccountManagement;
+﻿using System.DirectoryServices.AccountManagement;
 
 namespace PCLoan.Logic.Library.Models
 {
@@ -31,7 +30,12 @@ namespace PCLoan.Logic.Library.Models
         /// <summary>
         /// The role of the user.
         /// </summary>
-        public Role? Role { get; set; } = null;
+        public string Role { get; set; } = null;
+
+        /// <summary>
+        /// The JWS for the user once authenticated & authorized
+        /// </summary>
+        public string Token { get; set; } = null;
 
         /// <summary>
         /// The <see cref="UserPrincipal"/> of the user.

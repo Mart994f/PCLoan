@@ -46,16 +46,17 @@ namespace PCLoan.Controllers
         }
         */
 
-        public ActionResult Signout()
+        public ActionResult Signout(ComputerModel model)
         {
             string action = Request.Cookies["action"].Value;
 
-            Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
-            parameters.Add(@"");
 
             ViewBag.LogoutMessage = "Du vil nu blive logget ud";
             if (action == "loan")
             {
+                Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
+                parameters.Add(@"pcId", model.Name);
+                parameters.Add(@"name", model.LendBy);
 
                 ViewBag.SignoutMessage = "Du har nu udlånt en pc";
             }

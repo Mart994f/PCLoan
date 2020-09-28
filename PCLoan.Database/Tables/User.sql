@@ -1,5 +1,7 @@
 ﻿CREATE TABLE [dbo].[User]
 (
-	[ID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
-    [Username] NCHAR(15) NOT NULL
+    [Id] INT IDENTITY(1,1) NOT NULL, 
+    [UserName] VARCHAR(16) NOT NULL,
+    CONSTRAINT PK_User
+    PRIMARY KEY (Id)
 )

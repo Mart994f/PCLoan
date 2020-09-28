@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;

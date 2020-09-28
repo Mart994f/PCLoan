@@ -1,5 +1,7 @@
 ﻿CREATE TABLE [dbo].[State]
 (
-	[ID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
-    [State] NCHAR(20) NOT NULL
+    [Id] INT IDENTITY(1,1) NOT NULL, 
+    [State] VARCHAR(32) NOT NULL,
+    CONSTRAINT PK_State
+    PRIMARY KEY (Id)
 )

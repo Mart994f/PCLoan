@@ -2,12 +2,13 @@
 
 namespace PCLoan.Data.Library.Models
 {
-    [Table("[User]")]
-    public class UserModelDAO
+    [Table("State")]
+    public class StateModelDAO
     {
         [Key]
         public int Id { get; set; }
 
-        public string UserName { get; set; }
+        public string State { get; set; }
+
     }
 }

@@ -1,10 +1,12 @@
 ﻿CREATE TABLE [dbo].[Computer]
 (
-	[ID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    [Name] NCHAR(20) NOT NULL, 
-    [StateID] INT NOT NULL,
-    [Deactivated] BIT NOT NULL, 
+    [Id] INT IDENTITY(1,1) NOT NULL,
+    [Name] VARCHAR(32) NOT NULL, 
+    [StateId] INT NOT NULL,
+    [Deactivated] BIT NOT NULL,
+    CONSTRAINT PK_Computer
+    PRIMARY KEY (Id),
     CONSTRAINT FK_StateComputer
-    FOREIGN KEY (StateID)
-    REFERENCES [State]([ID])
+    FOREIGN KEY (StateId)
+    REFERENCES [State]([Id])
 )

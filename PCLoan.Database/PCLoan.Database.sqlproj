@@ -63,24 +63,19 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Computer.sql" />
-    <Build Include="Tables\LoanTable.sql" />
+    <Build Include="Tables\Loan.sql" />
     <Build Include="Tables\State.sql" />
     <Build Include="Tables\User.sql" />
-    <Build Include="Stored Pocedures\GetAllComputers.sql" />
-    <Build Include="Stored Pocedures\CheckUserExists.sql" />
-    <Build Include="Stored Pocedures\AddUser.sql" />
-    <Build Include="Stored Pocedures\CreateComputer.sql" />
-    <Build Include="Stored Pocedures\DeavtivateComputer.sql" />
-    <Build Include="Stored Pocedures\CreateLoan.sql" />
-    <Build Include="Stored Pocedures\ReturnLoan.sql" />
     <Build Include="Stored Pocedures\GetAvailableComputers.sql" />
     <Build Include="Stored Pocedures\GetLentComputer.sql" />
+    <Build Include="Stored Pocedures\UserExist.sql" />
+    <Build Include="Stored Pocedures\GetUserIdByName.sql" />
+    <Build Include="Tables\Log.sql" />
+    <Build Include="Stored Pocedures\GetAllComputersWithCurrentLoan.sql" />
+    <Build Include="Stored Pocedures\GetUsernameById.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PCLoanDatabase.refactorlog" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="Stored Pocedures\GetAllStates.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post-Deployment Scripts\AddStates.PostDeployment.sql" />
