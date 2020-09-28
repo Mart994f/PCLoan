@@ -15,7 +15,7 @@ namespace PCLoan.Logic.Library.Models
 
         public string LendBy { get; set; }
 
-        public DateTime LoanDate { get; set; }
+        public DateTime? LoanDate { get; set; }
 
         public DateTime? ReturnedDate { get; set; }
 

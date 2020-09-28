@@ -76,12 +76,23 @@ namespace PCLoan.Logic.Library.Controllers
             {
                 LoanModelDTO loan = loans.Where(l => l.ComputerId == computer.Id).OrderByDescending(l => l.LoanDate).FirstOrDefault();
 
-                if (!string.IsNullOrEmpty(computer.LendBy))
+                if (loan != null)
                 {
-                    computer.LendBy = _userRepository.GetUsernameById(loan.UserId);
-                }
+                    if (!string.IsNullOrEmpty(computer.LendBy))
+                    {
+                        computer.LendBy = _userRepository.GetUsernameById(loan.UserId);
+                    }
 
-                computer.ReturnedDate = loan.ReturnedDate;
+                    if (loan.LoanDate != null)
+                    {
+                        computer.LoanDate = loan.LoanDate;
+                    }
+
+                    if (loan.ReturnedDate != null)
+                    {
+                        computer.ReturnedDate = loan.ReturnedDate;
+                    } 
+                }
             }
 
             return computers;

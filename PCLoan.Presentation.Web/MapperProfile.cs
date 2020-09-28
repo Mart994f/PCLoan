@@ -1,27 +1,17 @@
 ﻿using AutoMapper;
-<<<<<<< HEAD
-=======
 using PCLoan.Data.Library.Models;
->>>>>>> develop
 using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;
 
 namespace PCLoan.Presentation.Web
 {
-<<<<<<< HEAD
-=======
     /// <summary>
     /// profiles of how to map from one calss to another.
     /// </summary>
->>>>>>> develop
     public class MapperProfile : Profile
     {
         public MapperProfile()
         {
-<<<<<<< HEAD
-            CreateMap<UserModel, UserModelDTO>();
-            CreateMap<UserModelDTO, UserModel>();
-=======
             // ---------- ComputerModel Mapping ----------
 
             // Map from ComputerModel to ComputerModelDTO..
@@ -81,7 +71,6 @@ namespace PCLoan.Presentation.Web
             CreateMap<UserModelDTO, UserModelDAO>();
             // and back
             CreateMap<UserModelDAO, UserModelDTO>();
->>>>>>> develop
         }
     }
 }

@@ -25,7 +25,7 @@ namespace PCLoan.Presentation.Web.Models
         [DataType(DataType.Date)]
         [Display(Name = "Udlånt")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
-        public DateTime LoanDate { get; set; }
+        public DateTime? LoanDate { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Afleværet")]

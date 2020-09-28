@@ -67,11 +67,11 @@ namespace PCLoan.Logic.Library.Services
                     model.Role = Role.Employee;
                 }
                 // Else if the user is member of "skp_it_slagelse",
-                else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "skp_it_slagelse")) // TODO: Update group name
-                {
-                    // then give the user a role of Administrator
-                    model.Role = Role.Administrator;
-                }
+                //else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "skp_it_slagelse")) // TODO: Update group name
+                //{
+                //    // then give the user a role of Administrator
+                //    model.Role = Role.Administrator;
+                //}
                 // Else if the user is member of "zbc_alle_elever",
                 else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "zbc_alle_elever"))
                 {
