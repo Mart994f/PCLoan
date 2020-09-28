@@ -10,6 +10,7 @@
     <div>
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
+            @Html.AntiForgeryToken()
             <form name="login" action="" method="post">
                 <div class="row">
                     <div class="col-4 offset-4 form-group">

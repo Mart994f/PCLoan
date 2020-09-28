@@ -1,4 +1,5 @@
-﻿using PCLoan.Models;
+﻿using PCLoan.Data;
+using PCLoan.Models;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
@@ -18,16 +19,33 @@ namespace PCLoan.Controllers
             return View();
         }
 
+        // POST: Login
         [HttpPost]
-        public ActionResult Login(LoginModel model)
+        public ActionResult Login(LoginModel model, string name)
         {
             bool isValid = model.ValidateUser();
+
+
             if (isValid)
             {
+                Response.Cookies["username"].Value = model.username.ToString();
+                //model.username = DbDataAccess.GetData<LoginModel>("CheckUserExists", parameters).Select(s => new SelectListItem { Value = s.username, Text = s.username });
+
+                Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
+                parameters.Add(@"name", Request.Cookies["username"].Value);
+
+                List<LoginModel> users = DbDataAccess.GetData<LoginModel>("CheckUserExists", parameters).ToList();
+
+                if (users[0] == null)
+                {
+                    DbDataAccess.SetData("AddUser", parameters);
+                }
+
                 model.GetInformation();
                 ViewBag.FailedLogin = null;
                 string requestName = Request.Cookies["action"].Value;
-                Response.Cookies["username"].Value = model.username.ToString();
+
+
                 if (requestName == "loan")
                 {
                     return RedirectToAction("Confirm", "Computer");

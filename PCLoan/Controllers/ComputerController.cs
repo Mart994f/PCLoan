@@ -48,14 +48,20 @@ namespace PCLoan.Controllers
 
         public ActionResult Signout()
         {
-            ViewBag.LogoutMessage = "Du vil nu blive logget ud";
             string action = Request.Cookies["action"].Value;
+
+            Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
+            parameters.Add(@"");
+
+            ViewBag.LogoutMessage = "Du vil nu blive logget ud";
             if (action == "loan")
             {
+
                 ViewBag.SignoutMessage = "Du har nu udlånt en pc";
             }
             else if (action == "return")
             {
+
                 ViewBag.SignoutMessage = "Du har nu afleveret din pc";
             }
             return View();
