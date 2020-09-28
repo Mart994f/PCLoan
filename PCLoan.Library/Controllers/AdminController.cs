@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using PCLoan.Data.Library.Models;
 using PCLoan.Data.Library.Repositorys;
 using PCLoan.Logic.Library.Models;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 
 namespace PCLoan.Logic.Library.Controllers
@@ -42,6 +42,40 @@ namespace PCLoan.Logic.Library.Controllers
 
         #region Public Methods
 
+        public ComputerModelDTO GetComputer(int id)
+        {
+            ComputerModelDTO computer = _mapper.Map<ComputerModelDTO>(_computerRepository.Get(id));
+
+            computer.States = _mapper.Map<IEnumerable<StateModelDTO>>(_stateRepository.GetAll()).ToList();
+
+            LoanModelDTO loan = _mapper.Map<IEnumerable<LoanModelDTO>>(_loanRepository.GetAll()).Where(l => l.ComputerId == computer.Id).OrderByDescending(l => l.LoanDate).FirstOrDefault();
+
+            if (loan != null)
+            {
+                computer.LendBy = _userRepository.GetUsernameById(loan.UserId);
+
+                if (loan.LoanDate != null)
+                {
+                    computer.LoanDate = loan.LoanDate;
+                }
+
+                if (loan.ReturnedDate != null)
+                {
+                    computer.ReturnedDate = loan.ReturnedDate;
+                }
+            }
+
+            return computer;
+        }
+
+        public ComputerModelDTO GetNewComputerModel()
+        {
+            ComputerModelDTO model = new ComputerModelDTO();
+            model.States = _mapper.Map<IEnumerable<StateModelDTO>>(_stateRepository.GetAll()).ToList();
+
+            return model;
+        }
+
         public IEnumerable<ComputerModelDTO> GetAllComputersWithCurrentLoan()
         {
             IEnumerable<ComputerModelDTO> computers = _mapper.Map<IEnumerable<ComputerModelDTO>>(_computerRepository.GetAll());
@@ -78,10 +112,7 @@ namespace PCLoan.Logic.Library.Controllers
 
                 if (loan != null)
                 {
-                    if (!string.IsNullOrEmpty(computer.LendBy))
-                    {
-                        computer.LendBy = _userRepository.GetUsernameById(loan.UserId);
-                    }
+                    computer.LendBy = _userRepository.GetUsernameById(loan.UserId);
 
                     if (loan.LoanDate != null)
                     {
@@ -91,7 +122,7 @@ namespace PCLoan.Logic.Library.Controllers
                     if (loan.ReturnedDate != null)
                     {
                         computer.ReturnedDate = loan.ReturnedDate;
-                    } 
+                    }
                 }
             }
 

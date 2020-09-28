@@ -31,7 +31,7 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.StateId)</td>
+                <td>@item.States.FirstOrDefault(s => s.Id == item.StateId).State</td>
                 <td>@Html.DisplayFor(modelItem => item.LendBy)</td>
                 <td>@Html.DisplayFor(modelItem => item.LoanDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.ReturnedDate)</td>

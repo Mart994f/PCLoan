@@ -29,13 +29,17 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputer(id));
+
+            return View(model);
         }
 
         // GET: AdminController/Create
         public ActionResult Create()
         {
-            return View();
+            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetNewComputerModel());
+
+            return View(model);
         }
 
         // POST: AdminController/Create
@@ -56,7 +60,9 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputer(id));
+
+            return View(model);
         }
 
         // POST: AdminController/Edit/5
@@ -77,7 +83,9 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputer(id));
+
+            return View(model);
         }
 
         // POST: AdminController/Delete/5
