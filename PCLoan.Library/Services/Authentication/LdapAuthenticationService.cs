@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using PCLoan.Logic.Library.Models;
 using System;
 using System.DirectoryServices.AccountManagement;
@@ -31,6 +32,8 @@ namespace PCLoan.Logic.Library.Services
         /// </summary>
         private ILogger<LdapAuthenticationService> _logger;
 
+        private IConfiguration _configuration;
+
         #endregion
 
         #region Public Properties
@@ -39,9 +42,11 @@ namespace PCLoan.Logic.Library.Services
 
         #region Constructors
 
-        public LdapAuthenticationService(ILogger<LdapAuthenticationService> logger)
+        public LdapAuthenticationService(ILogger<LdapAuthenticationService> logger, IConfiguration configuration)
         {
-            _ldapConnection = new LdapConnection(new LdapDirectoryIdentifier("10.255.1.1", 389));
+            _configuration = configuration;
+            _ldapConnection = new LdapConnection(new LdapDirectoryIdentifier(_configuration[_configuration.GetConnectionString("LdapIpAdress")],
+                                                                             int.Parse(_configuration[_configuration.GetConnectionString("LdapPort")])));
             _logger = logger;
         }
 
@@ -62,7 +67,7 @@ namespace PCLoan.Logic.Library.Services
                 // Bind to the LDAP server
                 _ldapConnection.Bind();
 
-                _principalContext = new PrincipalContext(ContextType.Domain, "10.255.1.1", model.UserName, model.Password);
+                _principalContext = new PrincipalContext(ContextType.Domain, _configuration[_configuration.GetConnectionString("LdapIpAdress")], model.UserName, model.Password);
 
                 // Requesting the userPrincipal from the Active Directory Domain Services, searching by SamAccountName
                 _userPrincipal = UserPrincipal.FindByIdentity(_principalContext, IdentityType.SamAccountName, model.UserName);

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using PCLoan.Logic.Library.Enums;
 using PCLoan.Logic.Library.Models;
 using System;
@@ -27,6 +28,8 @@ namespace PCLoan.Logic.Library.Services
         /// </summary>
         private ILogger<LdapAuthenticationService> _logger;
 
+        private IConfiguration _configuration;
+
         #endregion
 
         #region Public Properties
@@ -35,9 +38,11 @@ namespace PCLoan.Logic.Library.Services
 
         #region Constructors
 
-        public LdapAuthorizationService(ILogger<LdapAuthenticationService> logger)
+        public LdapAuthorizationService(ILogger<LdapAuthenticationService> logger, IConfiguration configuration)
         {
-            _ldapConnection = new LdapConnection(new LdapDirectoryIdentifier("10.255.1.1", 389));
+            _configuration = configuration;
+            _ldapConnection = new LdapConnection(new LdapDirectoryIdentifier(_configuration[_configuration.GetConnectionString("LdapIpAdress")],
+                                                                             int.Parse(_configuration[_configuration.GetConnectionString("LdapPort")])));
             _logger = logger;
         }
 
@@ -58,7 +63,7 @@ namespace PCLoan.Logic.Library.Services
                 // Bind to the LDAP server
                 _ldapConnection.Bind();
 
-                _principalContext = new PrincipalContext(ContextType.Domain, "10.255.1.1", model.UserName, model.Password);
+                _principalContext = new PrincipalContext(ContextType.Domain, _configuration[_configuration.GetConnectionString("LdapIpAdress")], model.UserName, model.Password);
 
                 // If the user is member of "ZBC-Ansatte(Alle)",
                 if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "ZBC-Ansatte(Alle)"))

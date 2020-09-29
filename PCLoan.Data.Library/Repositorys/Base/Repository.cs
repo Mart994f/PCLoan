@@ -25,7 +25,7 @@ namespace PCLoan.Data.Library.Repositorys
         public Repository(IConfiguration configuration)
         {
             _configuration = configuration;
-            CONNECTION_STRING = _configuration.GetConnectionString("Development");
+            CONNECTION_STRING = _configuration[_configuration.GetConnectionString("Development")];
         }
 
         #endregion
