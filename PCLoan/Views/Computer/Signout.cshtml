@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Signout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-5">
+    <div class="col-8 offset-2">
+        <p class="display-4 text-center">@ViewBag.SignoutMessage</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 offset-3">
+        <h2 id="logout" class="text-center">@ViewBag.LogoutMessage</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 offset-3">
+        <h2 id="countdown" class="text-center display-1"></h2>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var seconds = 5;
+        function countdown() {
+            seconds = seconds - 1;
+            if (seconds < 0) {
+                window.location = "https://localhost:44324/Computer/index";
+            }
+            else {
+                document.getElementById("countdown").innerHTML = seconds;
+
+                window.setTimeout("countdown()", 1000);
+            }
+        };
+        var message = "";
+        function logout() {
+            message = document.getElementById("logout").innerHTML
+            message = message + ".";
+            document.getElementById("logout").innerHTML = message;
+            window.setTimeout("logout()", 2000);
+        };
+        countdown();
+        logout();
+    </script>
+}

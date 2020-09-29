@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PCLoan.Data;
+using PCLoan.Models;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.Protocols;
@@ -17,55 +19,43 @@ namespace PCLoan.Controllers
             return View();
         }
 
+        // POST: Login
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(LoginModel model, string name)
         {
-            bool ValidateUser()
+            bool isValid = model.ValidateUser();
+
+
+            if (isValid)
             {
-                bool _valid = false;
+                Response.Cookies["username"].Value = model.username.ToString();
+                //model.username = DbDataAccess.GetData<LoginModel>("CheckUserExists", parameters).Select(s => new SelectListItem { Value = s.username, Text = s.username });
 
-                LdapDirectoryIdentifier identifier = new LdapDirectoryIdentifier("10.255.1.1", 389);
-                LdapConnection connection = new LdapConnection(identifier)
-                {
-                    Credential = new System.Net.NetworkCredential(username, password)
-                };
+                Dapper.DynamicParameters parameters = new Dapper.DynamicParameters();
+                parameters.Add(@"name", Request.Cookies["username"].Value);
 
-                try
+                List<LoginModel> users = DbDataAccess.GetData<LoginModel>("CheckUserExists", parameters).ToList();
+
+                if (users[0] == null)
                 {
-                    connection.Bind();
-                    PrincipalContext context = new PrincipalContext(ContextType.Domain, "10.255.1.1", username, password);
-                    UserPrincipal principal = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, username);
-                    _valid = true;
+                    DbDataAccess.SetData("AddUser", parameters);
                 }
 
-                catch
+                model.GetInformation();
+                ViewBag.FailedLogin = null;
+                string requestName = Request.Cookies["action"].Value;
+
+
+                if (requestName == "loan")
                 {
-
+                    return RedirectToAction("Confirm", "Computer");
                 }
-
-                return _valid;
+                else if (requestName == "return")
+                {
+                    return RedirectToAction("Confirm", "Computer");
+                }
             }
-
-            string GetInformation()
-            {
-                string _fullName = null;
-                // set up domain context using the default domain you're currently logged in 
-                using (PrincipalContext context = new PrincipalContext(ContextType.Domain))
-                {
-                    // find a user
-                    UserPrincipal user = UserPrincipal.FindByIdentity(context, username);
-
-                    if (user != null)
-                    {
-                        // get the "DisplayName" property ("Fullname" is WinNT specific)
-                        _fullName = user.DisplayName;
-
-                        // do something here....        
-                    }
-                }
-
-                return _fullName;
-            }
+            ViewBag.FailedLogin = "Brugernavn eller adgangskode er forkert";
             return View();
         }
     }
