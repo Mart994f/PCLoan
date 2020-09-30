@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using PCLoan.Data.Library.Models;
 using PCLoan.Data.Library.Repositorys;
 using PCLoan.Logic.Library.Models;
+using PCLoan.Logic.Library.Services;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 
 namespace PCLoan.Logic.Library.Controllers
@@ -21,6 +22,8 @@ namespace PCLoan.Logic.Library.Controllers
 
         private IMapper _mapper;
 
+        private ILoggingService _loggingService;
+
         #endregion
 
         #region Public Properties
@@ -29,13 +32,16 @@ namespace PCLoan.Logic.Library.Controllers
 
         #region Constructors
 
-        public AdminController(IComputerRepository computerRepository, IStateRepository stateRepository, ILoanRepository loanRepository, IUserRepository userRepository, IMapper mapper)
+        public AdminController(IComputerRepository computerRepository, IStateRepository stateRepository,
+                               ILoanRepository loanRepository, IUserRepository userRepository, IMapper mapper,
+                               ILoggingService loggingService)
         {
             _computerRepository = computerRepository;
             _stateRepository = stateRepository;
             _loanRepository = loanRepository;
             _userRepository = userRepository;
             _mapper = mapper;
+            _loggingService = loggingService;
         }
 
         #endregion
@@ -48,7 +54,10 @@ namespace PCLoan.Logic.Library.Controllers
 
             computer.States = _mapper.Map<IEnumerable<StateModelDTO>>(_stateRepository.GetAll()).ToList();
 
-            LoanModelDTO loan = _mapper.Map<IEnumerable<LoanModelDTO>>(_loanRepository.GetAll()).Where(l => l.ComputerId == computer.Id).OrderByDescending(l => l.LoanDate).FirstOrDefault();
+            LoanModelDTO loan = _mapper.Map<IEnumerable<LoanModelDTO>>(_loanRepository.GetAll())
+                                       .Where(l => l.ComputerId == computer.Id)
+                                       .OrderByDescending(l => l.LoanDate)
+                                       .FirstOrDefault();
 
             if (loan != null)
             {
@@ -84,6 +93,18 @@ namespace PCLoan.Logic.Library.Controllers
             computers = MapLoanToComputer(computers);
 
             return computers;
+        }
+
+        public void CreateComputer(string username, ComputerModelDTO model)
+        {
+            _computerRepository.Insert(_mapper.Map<ComputerModelDAO>(model));
+            _loggingService.Log(_userRepository.GetIdByname(username), $"created computer {model.Name}, with state {model.States.Find(s => s.Id == model.StateId).State}");
+
+        }
+
+        public void UpdateComputer(ComputerModelDTO model)
+        {
+            _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model));
         }
 
         #endregion

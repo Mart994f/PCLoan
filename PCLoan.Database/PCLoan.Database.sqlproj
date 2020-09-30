@@ -84,5 +84,6 @@
     <None Include="Post-Deployment Scripts\AddStates.sql" />
     <None Include="Post-Deployment Scripts\AddComputers.sql" />
     <None Include="PCLoanDatabase.publish.xml" />
+    <None Include="CreateScript.sql" />
   </ItemGroup>
 </Project>

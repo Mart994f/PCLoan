@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
+using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;
 using System.Collections.Generic;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private IAdminController _adminController;
@@ -44,11 +47,13 @@ namespace PCLoan.Presentation.Web.Controllers
 
         // POST: AdminController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Create(ComputerModel model)
         {
             try
             {
+                _adminController.CreateComputer(Request.Cookies["username"], _mapper.Map<ComputerModelDTO>(model));
+
                 return RedirectToAction(nameof(Index));
             }
             catch

@@ -71,7 +71,7 @@ namespace PCLoan.Logic.Library.Controllers
 
             model.Id = _userRepository.GetIdByname(model.UserName);
 
-            model = GenerateToken(model);
+            model = GenerateJSONWebToken(model);
 
             model.Password = string.Empty;
 
@@ -82,7 +82,7 @@ namespace PCLoan.Logic.Library.Controllers
 
         #region Private Helper Methods
 
-        private UserModelDTO GenerateToken(UserModelDTO model)
+        private UserModelDTO GenerateJSONWebToken(UserModelDTO model)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings")["Secret"]);

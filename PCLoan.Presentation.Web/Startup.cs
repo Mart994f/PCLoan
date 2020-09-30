@@ -38,6 +38,7 @@ namespace PCLoan.Presentation.Web
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<IStateRepository, StateRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ILoggingService, DbLoggingService>();
 
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings")["Secret"]);
 
@@ -58,7 +59,6 @@ namespace PCLoan.Presentation.Web
                         ValidateAudience = false
                     };
                 });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
