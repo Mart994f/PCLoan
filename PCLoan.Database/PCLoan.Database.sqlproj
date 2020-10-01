@@ -84,6 +84,10 @@
     <None Include="Post-Deployment Scripts\AddStates.sql" />
     <None Include="Post-Deployment Scripts\AddComputers.sql" />
     <None Include="PCLoanDatabase.publish.xml" />
+<<<<<<< HEAD
     <None Include="CreateScript.sql" />
+=======
+    <None Include="PCLoan.Database.publish.xml" />
+>>>>>>> mortenLocal
   </ItemGroup>
 </Project>
