@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PCLoan.Logic.Library.Models
 {
@@ -10,8 +11,10 @@ namespace PCLoan.Logic.Library.Models
 
         public int ComputerId { get; set; }
 
+        public List<ComputerModelDTO> Computers { get; set; }
+
         public DateTime LoanDate { get; set; }
 
-        public DateTime ReturnedDate { get; set; }
+        public DateTime? ReturnedDate { get; set; }
     }
 }

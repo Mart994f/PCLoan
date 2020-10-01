@@ -1,0 +1,32 @@
+﻿@model PCLoan.Presentation.Web.Models.LoanModel
+
+@{
+    ViewBag.Title = "Confirm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row mt-3">
+    <div class="col-8 offset-3">
+        <p class="display-3 align-self-center">@ViewBag.DropdownMessage</p>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-4 offset-4">
+        <h3>Velkommen, @User.FindFirst("unique_name")?.Value</h3>
+    </div>
+</div>
+@using (Html.BeginForm("Signout", "Computer", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row mt-2">
+        <div class="col-4 offset-4">
+            @Html.DropDownListFor(model => model.ComputerId, new SelectList(Model.Computers, "Id", "Name"), (string)ViewBag.DropdownMessage, htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-4 offset-4">
+            <button type="submit" class="btn btn-primary">@ViewBag.DropdownButton</button>
+        </div>
+    </div>
+}

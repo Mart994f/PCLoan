@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Presentation.Web.Models;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private IAdminController _adminController;
