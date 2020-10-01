@@ -29,6 +29,7 @@ namespace PCLoan.Presentation.Web
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ILoginController, LdapLoginController>();
             services.AddScoped<IAdminController, AdminController>();
+            services.AddScoped<IComputerController, ComputerController>();
 
             services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
             services.AddScoped<IAuthorizationService, LdapAuthorizationService>();

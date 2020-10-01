@@ -19,10 +19,10 @@
         <div class="col-8">
             <div class="row">
                 <div class="col-6 mb-5 text-center">
-                    @Html.ActionLink("Udlån", "RedirectToLogin", "Computer", new { loanPc = "loanPc" }, new { @class = "btn-success display-3 p-3 text-decoration-none", @type = "submit" })
+                    @Html.ActionLink("Udlån", "Login", "Login", new { loanPc = "loanPc" }, new { @class = "btn-success display-3 p-3 text-decoration-none", @type = "submit" })
                 </div>
                 <div class="col-6 mb-5 text-center">
-                    @Html.ActionLink("Aflever", "RedirectToLogin", "Computer", new { returnPc = "returnPc"} , new { @class = "btn-danger display-3 p-3 text-decoration-none", @type = "submit" })
+                    @Html.ActionLink("Aflever", "RedirectToLogin", "Computer", new { loanPc = "returnPc"} , new { @class = "btn-danger display-3 p-3 text-decoration-none", @type = "submit" })
                 </div>
             </div>
         </div>
