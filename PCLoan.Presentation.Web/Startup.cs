@@ -32,6 +32,7 @@ namespace PCLoan.Presentation.Web
 
             services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
             services.AddScoped<IAuthorizationService, LdapAuthorizationService>();
+            services.AddScoped<IJsonWebTokenService, JsonWebTokenService>();
 
             services.AddScoped<IComputerRepository, ComputerRepository>();
             services.AddScoped<ILoanRepository, LoanRepository>();
@@ -40,23 +41,18 @@ namespace PCLoan.Presentation.Web
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoggingService, DbLoggingService>();
 
-            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings")["Secret"]);
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(x =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => 
                 {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
                 });
         }
@@ -79,6 +75,7 @@ namespace PCLoan.Presentation.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

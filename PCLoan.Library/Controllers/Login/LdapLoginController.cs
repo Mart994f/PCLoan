@@ -27,6 +27,8 @@ namespace PCLoan.Logic.Library.Controllers
 
         private IUserRepository _userRepository;
 
+        private IJsonWebTokenService _jsonWebTokenService;
+
         private IConfiguration _configuration;
 
         #endregion
@@ -39,13 +41,15 @@ namespace PCLoan.Logic.Library.Controllers
 
         public LdapLoginController(IAuthenticationService authenticationService,
                                    IAuthorizationService authorizationService, ILogger<LdapLoginController> logger,
-                                   IMapper mapper, IUserRepository userRepository, IConfiguration configuration)
+                                   IMapper mapper, IUserRepository userRepository,
+                                   IJsonWebTokenService jsonWebTokenService, IConfiguration configuration)
         {
             _authenticationService = authenticationService;
             _authorizationService = authorizationService;
             _logger = logger;
             _mapper = mapper;
             _userRepository = userRepository;
+            _jsonWebTokenService = jsonWebTokenService;
             _configuration = configuration;
         }
 
@@ -71,7 +75,7 @@ namespace PCLoan.Logic.Library.Controllers
 
             model.Id = _userRepository.GetIdByname(model.UserName);
 
-            model = GenerateJSONWebToken(model);
+            model.Token = _jsonWebTokenService.GenerateJsonWebToken(model);
 
             model.Password = string.Empty;
 
