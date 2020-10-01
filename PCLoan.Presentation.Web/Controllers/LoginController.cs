@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;
+using System;
 using System.Net;
 
 namespace PCLoan.Presentation.Web.Controllers
@@ -33,6 +34,8 @@ namespace PCLoan.Presentation.Web.Controllers
                 model = _mapper.Map<UserModel>(_loginController.LoginUser(_mapper.Map<UserModelDTO>(model)));
                 if (model.Authenticated)
                 {
+                    Response.Cookies.Append("Auth", model.Token);
+
                     return Json(model);
                 }
             }
