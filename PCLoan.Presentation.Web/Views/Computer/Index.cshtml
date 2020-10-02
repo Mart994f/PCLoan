@@ -18,12 +18,15 @@
         <div class="col-2"></div>
         <div class="col-8">
             <div class="row">
-                <div class="col-6 mb-5 text-center">
-                    @Html.ActionLink("Udlån", "Login", "Login", new { loanPc = "loanPc" }, new { @class = "btn-success display-3 p-3 text-decoration-none", @type = "submit" })
-                </div>
-                <div class="col-6 mb-5 text-center">
-                    @Html.ActionLink("Aflever", "RedirectToLogin", "Computer", new { loanPc = "returnPc"} , new { @class = "btn-danger display-3 p-3 text-decoration-none", @type = "submit" })
-                </div>
+                @using (Html.BeginForm("Index", "Computer", FormMethod.Post))
+                {
+                    <div class="col-6 mb-5 text-center">
+                        <button type="submit" class="btn btn-success display-4 p-3 text-decoration-none" name="submitButton" value="loan">Udlån</button>
+                    </div>
+                    <div class="col-6 mb-5 text-center">
+                        <button type="submit" class="btn btn-danger display-4 p-3 text-decoration-none" name="submitButton" value="return">Aflever</button>
+                    </div>
+                }
             </div>
         </div>
         <div class="col-2"></div>

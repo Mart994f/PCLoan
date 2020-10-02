@@ -34,6 +34,7 @@ namespace PCLoan.Presentation.Web.Controllers
                 if (model.Authenticated)
                 {
                     return Json(model);
+                    //return RedirectToAction("Confirm", "Computer");
                 }
             }
 
@@ -42,7 +43,16 @@ namespace PCLoan.Presentation.Web.Controllers
 
         public ActionResult Signout()
         {
-            return View();
+            ViewBag.LogoutMessage = "Du vil nu blive logget ud";
+            if (Request.Cookies["action"] == "loanPc")
+            {
+                ViewBag.SignoutMessage = "Du har nu udlånt en pc";
+            }
+            else if (Request.Cookies["action"] == "returnPc")
+            {
+                ViewBag.SignoutMessage = "Du har nu afleveret din pc";
+            }
+            return RedirectToAction("Index", "Computer");
         }
     }
 }

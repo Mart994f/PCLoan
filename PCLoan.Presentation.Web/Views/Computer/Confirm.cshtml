@@ -16,7 +16,7 @@
         <h3>Velkommen, @User.FindFirst("unique_name")?.Value</h3>
     </div>
 </div>
-@using (Html.BeginForm("Signout", "Computer", FormMethod.Post))
+@using (Html.BeginForm("confirm", "Computer", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     <div class="row mt-2">

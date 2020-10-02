@@ -60,7 +60,6 @@ namespace PCLoan.Data.Library.Repositorys
                 return connection.ExecuteScalar<string>("GetUsernameById", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 10);
             }
         }
-
         #endregion
 
         #region Private Helper Methods
