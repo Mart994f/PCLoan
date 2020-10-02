@@ -10,6 +10,7 @@ using PCLoan.Data.Library.Repositorys;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Services;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PCLoan.Presentation.Web
 {
@@ -54,6 +55,15 @@ namespace PCLoan.Presentation.Web
                         ValidIssuer = Configuration["Jwt:Issuer"],
                         ValidAudience = Configuration["Jwt:Issuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies["Auth"];
+                            return Task.CompletedTask;
+                        },
                     };
                 });
         }
