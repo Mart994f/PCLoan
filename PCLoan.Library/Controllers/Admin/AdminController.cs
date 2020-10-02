@@ -95,16 +95,21 @@ namespace PCLoan.Logic.Library.Controllers
             return computers;
         }
 
-        public void CreateComputer(string username, ComputerModelDTO model)
+        public void CreateComputer(string username, ComputerModelDTO model, string state)
         {
             _computerRepository.Insert(_mapper.Map<ComputerModelDAO>(model));
-            _loggingService.Log(_userRepository.GetIdByname(username), $"created computer {model.Name}, with state {model.States.Find(s => s.Id == model.StateId).State}");
+            _loggingService.Log(_userRepository.GetIdByname(username), $"created computer {model.Name}, with state {state}", _computerRepository.GetComputerIdByName(model.Name));
 
         }
 
         public void UpdateComputer(ComputerModelDTO model)
         {
             _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model));
+        }
+
+        public StateModelDTO GetState(int id)
+        {
+            return _mapper.Map<StateModelDTO>(_stateRepository.Get(id));
         }
 
         #endregion

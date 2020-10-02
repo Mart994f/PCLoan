@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Models;
+using PCLoan.Presentation.Web.Enums;
 using PCLoan.Presentation.Web.Models;
+using System;
 using System.Collections.Generic;
 
 namespace PCLoan.Presentation.Web.Controllers
@@ -52,13 +54,13 @@ namespace PCLoan.Presentation.Web.Controllers
         {
             try
             {
-                _adminController.CreateComputer(Request.Cookies["username"], _mapper.Map<ComputerModelDTO>(model));
+                _adminController.CreateComputer(User.FindFirst("Username").Value, _mapper.Map<ComputerModelDTO>(model), _mapper.Map<StateModel>(_adminController.GetState(model.StateId)).State);
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(model);
             }
         }
 
@@ -73,15 +75,17 @@ namespace PCLoan.Presentation.Web.Controllers
         // POST: AdminController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, ComputerModel model)
+        public ActionResult Edit(ComputerModel model)
         {
             try
             {
+                _adminController.UpdateComputer(_mapper.Map<ComputerModelDTO>(model));
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(model);
             }
         }
 
@@ -96,15 +100,19 @@ namespace PCLoan.Presentation.Web.Controllers
         // POST: AdminController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, ComputerModel model)
+        public ActionResult Delete(ComputerModel model)
         {
+            model.Deactivated = true;
+
             try
             {
+                _adminController.UpdateComputer(_mapper.Map<ComputerModelDTO>(model));
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(model);
             }
         }
     }
