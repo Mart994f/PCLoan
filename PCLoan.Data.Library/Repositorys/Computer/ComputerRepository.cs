@@ -44,6 +44,17 @@ namespace PCLoan.Data.Library.Repositorys
             }
         }
 
+        public int GetComputerIdByName( string name)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@name", name);
+
+            using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                return connection.ExecuteScalar<int>("GetComputerIdByName", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+            }
+        }
+
         #endregion
 
         #region Private Helper Methods

@@ -36,7 +36,7 @@ namespace PCLoan.Data.Library.Repositorys
         {
             using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
             {
-                return connection.Get<T>(1);
+                return connection.Get<T>(id);
             }
         }
 

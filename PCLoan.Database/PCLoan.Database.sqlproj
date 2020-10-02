@@ -73,6 +73,7 @@
     <Build Include="Tables\Log.sql" />
     <Build Include="Stored Pocedures\GetAllComputersWithCurrentLoan.sql" />
     <Build Include="Stored Pocedures\GetUsernameById.sql" />
+    <Build Include="Stored Pocedures\GetComputerIdByName.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PCLoanDatabase.refactorlog" />

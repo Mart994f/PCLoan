@@ -36,8 +36,12 @@ namespace PCLoan.Presentation.Web.Controllers
                 {
                     Response.Cookies.Append("Auth", model.Token);
 
+<<<<<<< HEAD
                     return Json(model);
                     //return RedirectToAction("Confirm", "Computer");
+=======
+                    return RedirectToAction("Index", "Admin");
+>>>>>>> local
                 }
             }
 
@@ -46,6 +50,7 @@ namespace PCLoan.Presentation.Web.Controllers
 
         public ActionResult Signout()
         {
+<<<<<<< HEAD
             ViewBag.LogoutMessage = "Du vil nu blive logget ud";
             if (Request.Cookies["action"] == "loanPc")
             {
@@ -56,6 +61,19 @@ namespace PCLoan.Presentation.Web.Controllers
                 ViewBag.SignoutMessage = "Du har nu afleveret din pc";
             }
             return RedirectToAction("Index", "Computer");
+=======
+            if (bool.Parse(Request.Cookies["Kiosk"]) == true)
+            {
+                Response.Cookies.Delete("Action");
+                Response.Cookies.Delete("Auth");
+
+                return RedirectToAction("Index", "Computer");
+            }
+
+            Response.Cookies.Delete("Auth");
+
+            return RedirectToAction("Login", "Login");
+>>>>>>> local
         }
     }
 }

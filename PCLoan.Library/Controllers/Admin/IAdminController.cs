@@ -11,8 +11,10 @@ namespace PCLoan.Logic.Library.Controllers
 
         IEnumerable<ComputerModelDTO> GetAllComputersWithCurrentLoan();
 
-        void CreateComputer(string username, ComputerModelDTO model);
+        void CreateComputer(string username, ComputerModelDTO model, string state);
 
         void UpdateComputer(ComputerModelDTO model);
+
+        StateModelDTO GetState(int id);
     }
 }
