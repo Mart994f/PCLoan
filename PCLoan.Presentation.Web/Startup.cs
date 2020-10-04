@@ -93,7 +93,7 @@ namespace PCLoan.Presentation.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=admin}/{action=index}/{id?}");
+                    pattern: "{controller=login}/{action=login}/{id?}");
             });
         }
     }

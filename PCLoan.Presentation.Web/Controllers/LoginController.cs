@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;
-using System;
-using System.Net;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
@@ -42,6 +40,7 @@ namespace PCLoan.Presentation.Web.Controllers
 
             return View(model);
         }
+
 
         public ActionResult Signout()
         {

@@ -2,36 +2,44 @@
 
 @{
     ViewData["Title"] = "Login";
+    Layout = "_LayoutWithoutNavbar";
 }
 
-<h2>Log ind</h2>
-<div id="loginbox" style="display:block">
-    <div>
-        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
-        {
-            <form name="login" action="" method="post">
-                <div>
-                    @Html.LabelFor(m => m.UserName)
-                    <center>@Html.TextBoxFor(m => m.UserName, new { @class = "formname" })</center>
+<div class="container" id="login">
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-4 offset-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, new { @lass = "control-label" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                 </div>
-                <div>
-                    @Html.LabelFor(m => m.Password)
-                    <center>@Html.PasswordFor(m => m.Password, new { @class = "formpass" })</center>
-                    <div>
-                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
-                    </div>
-                    <div>
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="lgnfail text-danger">
-                        @ViewBag.FailedLogin
-                        <!--Validation message for failed login, DONT specify which one is false!-->
-                    </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 offset-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @lass = "control-label" })
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
-                <div id="login-btn">
-                    <center><button type="submit">login</button></center>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 offset-4">
+                <div class="lgnfail text-danger">
+                    <!--Validation message for failed login, DONT specify which one is false!-->
+                    @ViewBag.FailedLogin
                 </div>
-            </form>
-        }
-    </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 offset-4">
+                <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+        </div>
+    }
 </div>
+
+

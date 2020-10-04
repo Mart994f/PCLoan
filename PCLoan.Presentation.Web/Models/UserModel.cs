@@ -16,6 +16,7 @@ namespace PCLoan.Presentation.Web.Models
         /// The users username.
         /// </summary>
         [Required] 
+        [Display(Name = "Brugernavn")]
         public string UserName { get; set; }
 
         /// <summary>

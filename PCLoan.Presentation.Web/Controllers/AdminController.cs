@@ -10,7 +10,8 @@ using System.Collections.Generic;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
-    [Authorize]
+    // TODO: Re-enable authorize
+    //[Authorize(Roles = Role.EmployeeOrAdministrator)]
     public class AdminController : Controller
     {
         private IAdminController _adminController;
