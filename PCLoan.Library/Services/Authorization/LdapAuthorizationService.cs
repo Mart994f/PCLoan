@@ -78,7 +78,7 @@ namespace PCLoan.Logic.Library.Services
                 //    model.Role = Role.Administrator;
                 //}
                 // Else if the user is member of "zbc_alle_elever",
-                else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "zbc_alle_elever"))
+                else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "ZBC-StudSys-Elever-Alle"))
                 {
                     // then give the user a role of student
                     model.Role = Role.Student;

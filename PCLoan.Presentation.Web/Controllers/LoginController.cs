@@ -20,6 +20,8 @@ namespace PCLoan.Presentation.Web.Controllers
 
         public IActionResult Login()
         {
+            Response.Cookies.Append("Kiosk", false.ToString());
+
             return View();
         }
 

@@ -11,73 +11,71 @@
     </div>
 </div>
 <hr />
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="row">
-            <div class="col-6 text-right font-weight-bold">
-                @Html.DisplayNameFor(model => model.Name)
-            </div>
-            <div class="col-6">
-                @Html.DisplayFor(model => model.Name)
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="row">
-            <div class="col-6 text-right font-weight-bold">
-                @Html.DisplayNameFor(model => model.StateId)
-            </div>
-            <div class="col-6">
-                @Html.DisplayFor(model => model.States.Find(s => s.Id == model.StateId).State)
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="row">
-            <div class="col-6 text-right font-weight-bold">
-                @Html.DisplayNameFor(model => model.LendBy)
-            </div>
-            <div class="col-6">
-                @Html.DisplayFor(model => model.LendBy)
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="row">
-            <div class="col-6 text-right font-weight-bold">
-                @Html.DisplayNameFor(model => model.LoanDate)
-            </div>
-            <div class="col-6">
-                @Html.DisplayFor(model => model.LoanDate)
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="row">
-            <div class="col-6 text-right font-weight-bold">
-                @Html.DisplayNameFor(model => model.ReturnedDate)
-            </div>
-            <div class="col-6">
-                @Html.DisplayFor(model => model.ReturnedDate)
-            </div>
-        </div>
-    </div>
-</div>
 
-
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("Delete", "Admin", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="row">
+                <div class="col-6 text-right font-weight-bold">
+                    @Html.DisplayNameFor(model => model.Name)
+                </div>
+                <div class="col-6">
+                    @Html.DisplayFor(model => model.Name)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="row">
+                <div class="col-6 text-right font-weight-bold">
+                    @Html.DisplayNameFor(model => model.StateId)
+                </div>
+                <div class="col-6">
+                    @Html.DisplayFor(model => model.States.Find(s => s.Id == model.StateId).State)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="row">
+                <div class="col-6 text-right font-weight-bold">
+                    @Html.DisplayNameFor(model => model.LendBy)
+                </div>
+                <div class="col-6">
+                    @Html.DisplayFor(model => model.LendBy)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="row">
+                <div class="col-6 text-right font-weight-bold">
+                    @Html.DisplayNameFor(model => model.LoanDate)
+                </div>
+                <div class="col-6">
+                    @Html.DisplayFor(model => model.LoanDate)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="row">
+                <div class="col-6 text-right font-weight-bold">
+                    @Html.DisplayNameFor(model => model.ReturnedDate)
+                </div>
+                <div class="col-6">
+                    @Html.DisplayFor(model => model.ReturnedDate)
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row mt-3">
         <div class="col-6 offset-3">
             <div class="row">
