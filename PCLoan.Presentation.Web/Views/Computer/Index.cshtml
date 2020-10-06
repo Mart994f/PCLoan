@@ -30,3 +30,21 @@
         <div class="col-2"></div>
     </div>
 </div>
+
+@section scripts {
+    <script>
+        let keysPressed = {};
+
+        document.addEventListener("keydown", (event) => {
+            keysPressed[event.key] = true;
+
+            if (keysPressed['Control'] && keysPressed['Alt'] && event.key == 'F9') {
+                window.location = "https://localhost:44324/admin/index";
+            }
+        });
+
+        document.addEventListener("keyup", (event) => {
+            delete keysPressed[event.key];
+        });
+    </script>
+}
