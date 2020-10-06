@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using PCLoan.Data;
 using PCLoan.Data.Library.Models;
 using PCLoan.Data.Library.Repositorys;
 using PCLoan.Logic.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace PCLoan.Logic.Library.Controllers
 {
@@ -22,6 +20,8 @@ namespace PCLoan.Logic.Library.Controllers
 
         private IComputerRepository _computerRepository;
 
+        private IStateRepository _stateRepository;
+
         #endregion
 
         #region Public Properties
@@ -30,12 +30,14 @@ namespace PCLoan.Logic.Library.Controllers
 
         #region Constructors
 
-        public ComputerController(ILoanRepository loanRepository, IMapper mapper, IUserRepository userRepository, IComputerRepository computerRepository)
+        public ComputerController(ILoanRepository loanRepository, IMapper mapper, IUserRepository userRepository,
+                                  IComputerRepository computerRepository, IStateRepository stateRepository)
         {
             _loanRepository = loanRepository;
             _mapper = mapper;
             _userRepository = userRepository;
             _computerRepository = computerRepository;
+            _stateRepository = stateRepository;
         }
 
         #endregion
@@ -44,10 +46,13 @@ namespace PCLoan.Logic.Library.Controllers
         {
             model.LoanDate = DateTime.UtcNow;
             model.UserId = _userRepository.GetIdByname(username);
+            ComputerModelDTO computer = _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId));
+            computer.StateId = _stateRepository.GetAll().First(s => s.State == "Udlånt").Id;
 
             try
             {
                 _loanRepository.Insert(_mapper.Map<LoanModelDAO>(model));
+                _computerRepository.Update(_mapper.Map<ComputerModelDAO>(computer));
                 // TODO: Implement log
             }
             catch (Exception ex)
@@ -57,13 +62,16 @@ namespace PCLoan.Logic.Library.Controllers
             }
         }
 
-        public void ReturnLoan(LoanModelDTO model)
+        public void ReturnLoan(string username)
         {
+            LoanModelDTO model = GetCurrentLoan(username);
             model.ReturnedDate = DateTime.UtcNow;
 
             try
             {
                 _loanRepository.Update(_mapper.Map<LoanModelDAO>(model));
+                model.Computers.First().StateId = 1;
+                _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model.Computers.First()));
             }
             catch (Exception ex)
             {
@@ -75,14 +83,16 @@ namespace PCLoan.Logic.Library.Controllers
         public LoanModelDTO GetCurrentLoan(string username)
         {
 
-            LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(o => o.LoanDate).First(l => l.UserId == _userRepository.GetIdByname(username)));
+            LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(o => o.LoanDate).ThenByDescending(o => o.Id).First(l => l.UserId == _userRepository.GetIdByname(username)));
             model = AddLentComputer(model);
             return model;
         }
 
         private LoanModelDTO AddLentComputer(LoanModelDTO model)
         {
-            model.Computers = _mapper.Map<List<ComputerModelDTO>>(_computerRepository.Get(model.ComputerId));
+            var computer = _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId));
+            model.Computers = new List<ComputerModelDTO>();
+            model.Computers.Add(computer);
             return model;
         }
 

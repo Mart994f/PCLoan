@@ -20,8 +20,6 @@ namespace PCLoan.Presentation.Web.Controllers
 
         public IActionResult Login()
         {
-            Response.Cookies.Append("Kiosk", false.ToString());
-
             return View();
         }
 
@@ -36,7 +34,14 @@ namespace PCLoan.Presentation.Web.Controllers
                 {
                     Response.Cookies.Append("Auth", model.Token);
 
-                    return RedirectToAction("Index", "Admin");
+                    if (Request.Cookies["Kiosk"] == true.ToString())
+                    {
+                        return RedirectToAction("Confirm", "Computer");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
                 }
             }
 
@@ -46,15 +51,11 @@ namespace PCLoan.Presentation.Web.Controllers
 
         public ActionResult Signout()
         {
-            if (bool.Parse(Request.Cookies["Kiosk"]) == true)
-            {
-                Response.Cookies.Delete("Action");
-                Response.Cookies.Delete("Auth");
-
-                return RedirectToAction("Index", "Computer");
-            }
-
+            Response.Cookies.Delete("Action");
             Response.Cookies.Delete("Auth");
+
+            if (Request.Cookies["Kiosk"] == true.ToString())
+                return RedirectToAction("Index", "Computer");
 
             return RedirectToAction("Login", "Login");
         }

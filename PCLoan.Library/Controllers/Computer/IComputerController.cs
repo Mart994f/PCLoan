@@ -7,6 +7,6 @@ namespace PCLoan.Logic.Library.Controllers
         void CreateLoan(string username, LoanModelDTO model);
         LoanModelDTO GetCurrentLoan(string username);
         LoanModelDTO GetNewLoanModel();
-        void ReturnLoan(LoanModelDTO model);
+        void ReturnLoan(string username);
     }
 }

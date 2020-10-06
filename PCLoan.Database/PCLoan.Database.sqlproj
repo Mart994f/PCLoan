@@ -74,6 +74,7 @@
     <Build Include="Stored Pocedures\GetAllComputersWithCurrentLoan.sql" />
     <Build Include="Stored Pocedures\GetUsernameById.sql" />
     <Build Include="Stored Pocedures\GetComputerIdByName.sql" />
+    <Build Include="Stored Pocedures\DeactivateComputer.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PCLoanDatabase.refactorlog" />

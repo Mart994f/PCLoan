@@ -15,6 +15,8 @@ namespace PCLoan.Logic.Library.Controllers
 
         void UpdateComputer(ComputerModelDTO model);
 
+        void DeactivateComputer(int id);
+
         StateModelDTO GetState(int id);
     }
 }

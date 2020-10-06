@@ -47,7 +47,7 @@ namespace PCLoan.Presentation.Web.Controllers
             else if (action == "return")
             {
                 // TODO: Implement username from the Json WebToken
-                model = _mapper.Map<LoanModel>(_computerController.GetCurrentLoan("Username"));
+                model = _mapper.Map<LoanModel>(_computerController.GetCurrentLoan(User.FindFirst("Username").Value));
             }
 
             return View(model);
@@ -60,13 +60,13 @@ namespace PCLoan.Presentation.Web.Controllers
             if (Request.Cookies["action"] == "loan")
             {
                 // TODO: Get the right username via Json WebToken
-                _computerController.CreateLoan(null, _mapper.Map<LoanModelDTO>(model));
+                _computerController.CreateLoan(User.FindFirst("Username").Value, _mapper.Map<LoanModelDTO>(model));
                 return RedirectToAction("Signout", "Login");
             }
             //For returning a computer
             else if (Request.Cookies["action"] == "return")
             {
-                _computerController.ReturnLoan(_mapper.Map<LoanModelDTO>(model));
+                _computerController.ReturnLoan(User.FindFirst("Username").Value);
                 return RedirectToAction("Signout", "Login");
             }
             return View(model);

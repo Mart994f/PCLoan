@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace PCLoan.Logic.Library.Controllers
 {
+    // TODO: Implement logging to log
     public class AdminController : IAdminController
     {
         #region Private Fields
@@ -87,7 +88,7 @@ namespace PCLoan.Logic.Library.Controllers
 
         public IEnumerable<ComputerModelDTO> GetAllComputersWithCurrentLoan()
         {
-            IEnumerable<ComputerModelDTO> computers = _mapper.Map<IEnumerable<ComputerModelDTO>>(_computerRepository.GetAll());
+            IEnumerable<ComputerModelDTO> computers = _mapper.Map<IEnumerable<ComputerModelDTO>>(_computerRepository.GetAll()).Where(c => c.Deactivated != true);
 
             computers = AddStatesToComputer(computers);
             computers = MapLoanToComputer(computers);
@@ -98,13 +99,18 @@ namespace PCLoan.Logic.Library.Controllers
         public void CreateComputer(string username, ComputerModelDTO model, string state)
         {
             _computerRepository.Insert(_mapper.Map<ComputerModelDAO>(model));
-            _loggingService.Log(_userRepository.GetIdByname(username), $"created computer {model.Name}, with state {state}", _computerRepository.GetComputerIdByName(model.Name));
+            // _loggingService.Log(_userRepository.GetIdByname(username), $"created computer {model.Name}, with state {state}", _computerRepository.GetComputerIdByName(model.Name));
 
         }
 
         public void UpdateComputer(ComputerModelDTO model)
         {
             _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model));
+        }
+
+        public void DeactivateComputer(int id)
+        {
+            _computerRepository.DeactivateComputer(id);
         }
 
         public StateModelDTO GetState(int id)
@@ -134,7 +140,7 @@ namespace PCLoan.Logic.Library.Controllers
 
             foreach (ComputerModelDTO computer in computers)
             {
-                LoanModelDTO loan = loans.Where(l => l.ComputerId == computer.Id).OrderByDescending(l => l.LoanDate).FirstOrDefault();
+                LoanModelDTO loan = loans.Where(l => l.ComputerId == computer.Id).OrderByDescending(l => l.LoanDate).ThenByDescending(l => l.Id).FirstOrDefault();
 
                 if (loan != null)
                 {

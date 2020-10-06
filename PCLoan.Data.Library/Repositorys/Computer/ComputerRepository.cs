@@ -55,6 +55,17 @@ namespace PCLoan.Data.Library.Repositorys
             }
         }
 
+        public int DeactivateComputer(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@id", id);
+
+            using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                return connection.Execute("DeactivateComputer", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+            }
+        }
+
         #endregion
 
         #region Private Helper Methods

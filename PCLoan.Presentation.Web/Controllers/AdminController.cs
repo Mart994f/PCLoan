@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Models;
-using PCLoan.Presentation.Web.Enums;
 using PCLoan.Presentation.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
@@ -45,6 +45,9 @@ namespace PCLoan.Presentation.Web.Controllers
         {
             ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetNewComputerModel());
 
+            var states = from Models.StateModel t in model.States select new SelectListItem { Value = t.Id.ToString(), Text = t.State };
+            ViewBag.States = states;
+
             return View(model);
         }
 
@@ -69,6 +72,9 @@ namespace PCLoan.Presentation.Web.Controllers
         public ActionResult Edit(int id)
         {
             ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputer(id));
+
+            var states = from Models.StateModel t in model.States select new SelectListItem { Value = t.Id.ToString(), Text = t.State };
+            ViewBag.States = states;
 
             return View(model);
         }
@@ -101,13 +107,11 @@ namespace PCLoan.Presentation.Web.Controllers
         // POST: AdminController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(ComputerModel model)
+        public ActionResult Delete(int id, ComputerModel model)
         {
-            model.Deactivated = true;
-
             try
             {
-                _adminController.UpdateComputer(_mapper.Map<ComputerModelDTO>(model));
+                _adminController.DeactivateComputer(id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -115,6 +119,13 @@ namespace PCLoan.Presentation.Web.Controllers
             {
                 return View(model);
             }
+        }
+
+        public ActionResult OpenKiosk()
+        {
+            Response.Cookies.Append("Kiosk", true.ToString());
+
+            return RedirectToAction("Index", "Computer");
         }
     }
 }

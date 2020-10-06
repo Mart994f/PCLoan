@@ -10,5 +10,7 @@ namespace PCLoan.Data.Library.Repositorys
         IEnumerable<ComputerModelDAO> GetAllComputersWithCurrentLoan();
 
         int GetComputerIdByName(string name);
+
+        int DeactivateComputer(int id);
     }
 }
