@@ -127,5 +127,12 @@ namespace PCLoan.Presentation.Web.Controllers
 
             return RedirectToAction("Index", "Computer");
         }
+
+        public ActionResult CloseKiosk()
+        {
+            Response.Cookies.Delete("Kiosk");
+
+            return RedirectToAction("Index");
+        }
     }
 }
