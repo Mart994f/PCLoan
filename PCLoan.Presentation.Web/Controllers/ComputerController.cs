@@ -59,17 +59,32 @@ namespace PCLoan.Presentation.Web.Controllers
             //For lending a computer
             if (Request.Cookies["action"] == "loan")
             {
-                // TODO: Get the right username via Json WebToken
                 _computerController.CreateLoan(User.FindFirst("Username").Value, _mapper.Map<LoanModelDTO>(model));
-                return RedirectToAction("Signout", "Login");
+                return RedirectToAction("Signout", "Computer");
             }
             //For returning a computer
             else if (Request.Cookies["action"] == "return")
             {
                 _computerController.ReturnLoan(User.FindFirst("Username").Value);
-                return RedirectToAction("Signout", "Login");
+                return RedirectToAction("Signout", "Computer");
             }
             return View(model);
+        }
+
+        public IActionResult Signout()
+        {
+            ViewBag.LogoutMessage = "Du vil nu blive logget ud";
+
+            if (Request.Cookies["Action"] == "loan")
+            {
+                ViewBag.SignoutMessage = "Du har nu lånt en pc";
+            }
+            else if (Request.Cookies["Action"]  == "return")
+            {
+                ViewBag.SignoutMessage = "Du har nu afleveret din pc";
+            }
+
+            return View();
         }
     }
 }

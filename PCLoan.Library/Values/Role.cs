@@ -1,4 +1,4 @@
-﻿namespace PCLoan.Logic.Library.Enums
+﻿namespace PCLoan.Logic.Library.Values
 {
     public static class Role
     {

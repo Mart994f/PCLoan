@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using PCLoan.Data.Library.Models;
 using PCLoan.Data.Library.Repositorys;
+using PCLoan.Logic.Library.Exceptions;
 using PCLoan.Logic.Library.Models;
+using PCLoan.Logic.Library.Values;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,22 +44,72 @@ namespace PCLoan.Logic.Library.Controllers
 
         #endregion
 
+        #region Public Methods      
+
+        // Create a new loan
+        public bool RegisterLoan(int userId, LoanModelDTO model)
+        {
+            bool created;
+
+            // Check if the user already have a loan, if they do throw a UserAlreadyHaveLoanException..
+            if (CheckIfUserHaveALoan(userId))
+            {
+                throw new UserAlreadyHaveLoanException("Brugeren har allerede et lån, Prøv igen senere.");
+            }
+            // else create the loan
+            else
+            {
+                // Set the loan date..
+                model.LoanDate = DateTime.UtcNow;
+
+                // and the userId
+                model.UserId = userId;
+
+                // Save the loan..
+                created = CreateLoan(model);
+
+                //  and update the computers state
+                UpdateComputerState(model.ComputerId, States.Lend);
+
+                // and log it
+                // TODO: Implement log
+            }
+
+            return created;
+        }
+
+
+        // Return current loan
+        public void ReturnLoan()
+        {
+
+        }
+
+        // Get users current loan
+        public void GetUsersCurrentLoan()
+        {
+
+        }
+
+        // Add available computers
+        public LoanModelDTO AddAvailableComputers()
+        {
+
+        }
+
+
         public void CreateLoan(string username, LoanModelDTO model)
         {
-            model.LoanDate = DateTime.UtcNow;
-            model.UserId = _userRepository.GetIdByname(username);
             ComputerModelDTO computer = _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId));
             computer.StateId = _stateRepository.GetAll().First(s => s.State == "Udlånt").Id;
 
             try
             {
-                _loanRepository.Insert(_mapper.Map<LoanModelDAO>(model));
-                _computerRepository.Update(_mapper.Map<ComputerModelDAO>(computer));
-                // TODO: Implement log
+
+                
             }
             catch (Exception ex)
             {
-                // TODO: Implement log and handle error
                 throw;
             }
         }
@@ -82,7 +134,6 @@ namespace PCLoan.Logic.Library.Controllers
 
         public LoanModelDTO GetCurrentLoan(string username)
         {
-
             LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(o => o.LoanDate).ThenByDescending(o => o.Id).First(l => l.UserId == _userRepository.GetIdByname(username)));
             model = AddLentComputer(model);
             return model;
@@ -108,5 +159,60 @@ namespace PCLoan.Logic.Library.Controllers
             model.Computers = _mapper.Map<List<ComputerModelDTO>>(_computerRepository.GetAvailableComputers());
             return model;
         }
+
+        #endregion
+
+        #region Private Helper Methods
+
+        // Check if user already have a loan
+        private bool CheckIfUserHaveALoan(int userId)
+        {
+
+        }
+
+        // Add computer information to the current loan
+        private void GetLendComputer()
+        {
+
+        }
+
+        // Write new loan to database
+        private bool CreateLoan(LoanModelDTO model)
+        {
+            try
+            {
+                _loanRepository.Insert(_mapper.Map<LoanModelDAO>(model));
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        // Get the available computers
+        private void GetAvailableComputers()
+        {
+
+        }
+
+        // Update the computers state
+        private bool UpdateComputerState(int computerId, States stateId)
+        {
+            stateId.
+            try
+            {
+                _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model));
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
     }
 }
