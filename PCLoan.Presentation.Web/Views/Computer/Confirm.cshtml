@@ -12,7 +12,8 @@
 </div>
 <div class="row mt-3">
     <div class="col-4 offset-4">
-        <h3>Velkommen, @User.FindFirst("unique_name")?.Value</h3>
+        <h3>Velkommen, @User.FindFirst("Username")?.Value</h3>
+        <p class="">Vælg en af de nedenstående computere</p>
     </div>
 </div>
 @using (Html.BeginForm("confirm", "Computer", FormMethod.Post))
@@ -24,7 +25,7 @@
         </div>
     </div>
     <div class="row mt-3">
-        <div class="col-4 offset-4">
+        <div class="col-4 offset-4 text-center">
             <button type="submit" class="btn btn-primary">@ViewBag.DropdownButton</button>
         </div>
     </div>

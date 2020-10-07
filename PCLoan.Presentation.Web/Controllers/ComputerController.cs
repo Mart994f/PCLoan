@@ -42,12 +42,14 @@ namespace PCLoan.Presentation.Web.Controllers
             if (action == "loan")
             {
                 model = _mapper.Map<LoanModel>(_computerController.GetNewLoanModel());
+                ViewBag.DropdownButton = "Lån";
             }
             //If a computer is returned
             else if (action == "return")
             {
                 // TODO: Implement username from the Json WebToken
                 model = _mapper.Map<LoanModel>(_computerController.GetCurrentLoan(User.FindFirst("Username").Value));
+                ViewBag.DropdownButton = "Aflever";
             }
 
             return View(model);

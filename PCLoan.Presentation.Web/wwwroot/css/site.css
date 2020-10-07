@@ -73,3 +73,17 @@ body {
 #login {
     top: 50rem;
 }
+
+#action .btn {
+    height: auto;
+    width: 14vw;
+    padding: 1.5rem !important;
+    font-size: 4.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.btn:disabled {
+    background-color: lightgray;
+    color: #555;
+}
