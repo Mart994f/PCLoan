@@ -9,10 +9,15 @@
     @using (Html.BeginForm("Login", "Login", FormMethod.Post))
     {
         <div class="row">
+            <div class="col-4 offset-4 text-center">
+                <p class="display-3">Log ind</p>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-4 offset-4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.UserName, new { @lass = "control-label" })
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control p-2" })
                     @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -21,7 +26,7 @@
             <div class="col-4 offset-4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.Password, new { @lass = "control-label" })
-                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control p-2" })
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -35,8 +40,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-4 offset-4">
-                <button class="btn btn-primary" type="submit">Login</button>
+            <div class="col-4 offset-4 text-center">
+                <button class="btn btn-primary btn-lg mt-2" type="submit">Login</button>
             </div>
         </div>
     }
