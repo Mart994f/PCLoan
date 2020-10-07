@@ -6,11 +6,10 @@ using PCLoan.Logic.Library.Models;
 using PCLoan.Logic.Library.Values;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PCLoan.Logic.Library.Controllers
 {
-    public class ComputerController : IComputerController
+    public class ComputerController
     {
         #region Private Fields
 
@@ -46,15 +45,18 @@ namespace PCLoan.Logic.Library.Controllers
 
         #region Public Methods      
 
-        // Create a new loan
-        public bool RegisterLoan(int userId, LoanModelDTO model)
+        /// <summary>
+        /// Registers a loan. If the user already have a loan, then a <see cref="UserAlreadyHaveLoanException"/> is thrown.
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        /// <param name="model">A <see cref="LoanModelDTO"/> containing the loan details</param>
+        public void RegisterLoan(int userId, LoanModelDTO model)
         {
-            bool created;
-
             // Check if the user already have a loan, if they do throw a UserAlreadyHaveLoanException..
-            if (CheckIfUserHaveALoan(userId))
+            if (CheckUserHaveLoan(userId))
             {
-                throw new UserAlreadyHaveLoanException("Brugeren har allerede et lån, Prøv igen senere.");
+                // TODO: Log exception occurred
+                throw new UserAlreadyHaveLoanException("Brugeren har allerede et lån, og kan derfor ikke låne igen.");
             }
             // else create the loan
             else
@@ -65,24 +67,33 @@ namespace PCLoan.Logic.Library.Controllers
                 // and the userId
                 model.UserId = userId;
 
-                // Save the loan..
-                created = CreateLoan(model);
+                // Save the loan
+                if (CreateLoan(model))
+                {
+                    // TODO: Log exception occurred
+                    // TODO: Throw LoanNotCreatedException
+                }
 
-                //  and update the computers state
+                //  Update the computers state
                 UpdateComputerState(model.ComputerId, States.Lend);
 
-                // and log it
+                // Log it
                 // TODO: Implement log
             }
-
-            return created;
         }
-
 
         // Return current loan
         public void ReturnLoan()
         {
+            // Get users current loan
 
+            // Set return date
+
+            // Save the updated loan
+
+            // Update computers state
+
+            // Log it
         }
 
         // Get users current loan
@@ -92,91 +103,40 @@ namespace PCLoan.Logic.Library.Controllers
         }
 
         // Add available computers
-        public LoanModelDTO AddAvailableComputers()
+        public List<ComputerModelDTO> GetAvailableComputers()
         {
-
-        }
-
-
-        public void CreateLoan(string username, LoanModelDTO model)
-        {
-            ComputerModelDTO computer = _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId));
-            computer.StateId = _stateRepository.GetAll().First(s => s.State == "Udlånt").Id;
-
-            try
-            {
-
-                
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        public void ReturnLoan(string username)
-        {
-            LoanModelDTO model = GetCurrentLoan(username);
-            model.ReturnedDate = DateTime.UtcNow;
-
-            try
-            {
-                _loanRepository.Update(_mapper.Map<LoanModelDAO>(model));
-                model.Computers.First().StateId = 1;
-                _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model.Computers.First()));
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-        public LoanModelDTO GetCurrentLoan(string username)
-        {
-            LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(o => o.LoanDate).ThenByDescending(o => o.Id).First(l => l.UserId == _userRepository.GetIdByname(username)));
-            model = AddLentComputer(model);
-            return model;
-        }
-
-        private LoanModelDTO AddLentComputer(LoanModelDTO model)
-        {
-            var computer = _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId));
-            model.Computers = new List<ComputerModelDTO>();
-            model.Computers.Add(computer);
-            return model;
-        }
-
-        public LoanModelDTO GetNewLoanModel()
-        {
-            LoanModelDTO model = new LoanModelDTO();
-            model = AddAvailableComputers(model);
-            return model;
-        }
-
-        private LoanModelDTO AddAvailableComputers(LoanModelDTO model)
-        {
-            model.Computers = _mapper.Map<List<ComputerModelDTO>>(_computerRepository.GetAvailableComputers());
-            return model;
+            return _mapper.Map<List<ComputerModelDTO>>(_computerRepository.GetAvailableComputers());
         }
 
         #endregion
 
         #region Private Helper Methods
 
-        // Check if user already have a loan
-        private bool CheckIfUserHaveALoan(int userId)
+        /// <summary>
+        /// Checks if a user already have a loan
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        /// <returns>True if the user have a loan, else False</returns>
+        private bool CheckUserHaveLoan(int userId)
         {
-
+            return _loanRepository.CheckUserHaveLoan(userId);
         }
 
-        // Add computer information to the current loan
-        private void GetLendComputer()
+        /// <summary>
+        /// Gets the lend computer
+        /// </summary>
+        /// <param name="computerId">Id of the computer</param>
+        /// <returns>An <see cref="ComputerModelDTO"/> containing the computer details</returns>
+        private ComputerModelDTO GetLendComputer(int computerId)
         {
-
+            return _mapper.Map<ComputerModelDTO>(_computerRepository.Get(computerId));
         }
 
-        // Write new loan to database
+        /// <summary>
+        /// Creates the new loan
+        /// </summary>
+        /// <param name="model">A <see cref="LoanModelDTO"/> containing the loan details</param>
+        /// <returns>True if successful, else False</returns>
         private bool CreateLoan(LoanModelDTO model)
         {
             try
@@ -191,26 +151,37 @@ namespace PCLoan.Logic.Library.Controllers
             return true;
         }
 
-        // Get the available computers
-        private void GetAvailableComputers()
+        /// <summary>
+        /// Returns the loan
+        /// </summary>
+        /// <param name="loanId">The id of the loan to be returned</param>
+        private void ReturnLoan(int loanId)
         {
-
-        }
-
-        // Update the computers state
-        private bool UpdateComputerState(int computerId, States stateId)
-        {
-            stateId.
             try
             {
-                _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model));
+                _loanRepository.ReturnLoan(loanId, DateTime.UtcNow);
             }
             catch (Exception)
             {
-                return false;
+                // TODO: Implement exception handling
             }
+        }
 
-            return true;
+        /// <summary>
+        /// Updates the state of the computer
+        /// </summary>
+        /// <param name="computerId">Id of the computer to update</param>
+        /// <param name="stateId">Id of the new state</param>
+        private void UpdateComputerState(int computerId, States stateId)
+        {
+            try
+            {
+                _computerRepository.UpdateState(computerId, stateId);
+            }
+            catch (Exception)
+            {
+                // TODO: Implement exception handling
+            }
         }
 
         #endregion
