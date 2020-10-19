@@ -5,18 +5,11 @@ namespace PCLoan.Logic.Library.Controllers
 {
     public interface IAdminController
     {
-        ComputerModelDTO GetComputer(int id);
-
-        ComputerModelDTO GetNewComputerModel();
-
-        IEnumerable<ComputerModelDTO> GetAllComputersWithCurrentLoan();
-
-        void CreateComputer(string username, ComputerModelDTO model, string state);
-
-        void UpdateComputer(ComputerModelDTO model);
-
+        void CreateComputer(int userId, ComputerModelDTO model);
         void DeactivateComputer(int id);
-
-        StateModelDTO GetState(int id);
+        List<ComputerModelDTO> GetComputersWithLoan();
+        ComputerModelDTO GetComputerWithLoan(int id);
+        void UpdateComputer(ComputerModelDTO model);
+        List<StateModelDTO> GetStates();
     }
 }

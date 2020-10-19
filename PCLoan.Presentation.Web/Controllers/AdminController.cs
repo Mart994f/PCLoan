@@ -27,7 +27,7 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController
         public ActionResult Index()
         {
-            IEnumerable<ComputerModel> models = _mapper.Map<IEnumerable<ComputerModel>>(_adminController.GetAllComputersWithCurrentLoan());
+            IEnumerable<ComputerModel> models = _mapper.Map<IEnumerable<ComputerModel>>(_adminController.GetComputersWithLoan());
 
             return View(models);
         }
@@ -35,7 +35,7 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController/Details/5
         public ActionResult Details(int id)
         {
-            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputer(id));
+            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputerWithLoan(id));
 
             return View(model);
         }
@@ -43,7 +43,9 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController/Create
         public ActionResult Create()
         {
-            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetNewComputerModel());
+            ComputerModel model = new ComputerModel();
+
+            model.States = _mapper.Map<List<StateModel>>(_adminController.GetStates());
 
             var states = from Models.StateModel t in model.States select new SelectListItem { Value = t.Id.ToString(), Text = t.State };
             ViewBag.States = states;
@@ -58,7 +60,7 @@ namespace PCLoan.Presentation.Web.Controllers
         {
             try
             {
-                _adminController.CreateComputer(User.FindFirst("Username").Value, _mapper.Map<ComputerModelDTO>(model), _mapper.Map<StateModel>(_adminController.GetState(model.StateId)).State);
+                _adminController.CreateComputer(int.Parse(User.FindFirst("Id").Value), _mapper.Map<ComputerModelDTO>(model));
 
                 return RedirectToAction(nameof(Index));
             }
@@ -71,7 +73,7 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController/Edit/5
         public ActionResult Edit(int id)
         {
-            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputer(id));
+            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputerWithLoan(id));
 
             var states = from Models.StateModel t in model.States select new SelectListItem { Value = t.Id.ToString(), Text = t.State };
             ViewBag.States = states;
@@ -99,7 +101,7 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController/Delete/5
         public ActionResult Delete(int id)
         {
-            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputer(id));
+            ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputerWithLoan(id));
 
             return View(model);
         }

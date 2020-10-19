@@ -184,7 +184,7 @@ namespace PCLoan.Logic.Library.Controllers
         {
             try
             {
-                _computerRepository.UpdateState(computerId, int.Parse(stateId.ToString()));
+                _computerRepository.UpdateState(computerId, (int)stateId);
             }
             catch (Exception ex)
             {
