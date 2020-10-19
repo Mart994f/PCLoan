@@ -21,7 +21,7 @@ namespace PCLoan.Presentation.Web.Controllers
 
         public IActionResult Index()
         {
-            //_computerController.GetAvailableComputers
+            ViewBag.AvailableComputerAmount = _computerController.GetAvailableComputers().Count;
             return View();
         }
 
@@ -55,7 +55,7 @@ namespace PCLoan.Presentation.Web.Controllers
                 model = _mapper.Map<LoanModel>(_computerController.GetUsersCurrentLoan(int.Parse(User.FindFirst("Id").Value)));
                 ViewBag.DropdownButton = "Aflever";
             }
-
+            
             return View(model);
         }
 

@@ -62,7 +62,7 @@ namespace PCLoan.Logic.Library.Controllers
                 model.UserId = userId;
 
                 // Save the loan
-                if (CreateLoan(model))
+                if (!CreateLoan(model))
                 {
                     // TODO: Log exception occurred
                     throw new LoanNotCreatedException("Der skete en fejl ved oprettelsen af lånet.");

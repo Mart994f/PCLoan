@@ -18,7 +18,7 @@
             {
                 <div id="action" class="row text-center">
                     <div class="col-6 text-left">
-                        <button type="submit" class="btn btn-success p-3 text-decoration-none" name="submitButton" value="loan">Udlån</button>
+                        <button type="submit" id="loanButton" class="btn btn-success p-3 text-decoration-none" name="submitButton" value="loan">Udlån</button>
                     </div>
                     <div class="col-6 text-right">
                         <button type="submit" class="btn btn-danger p-3 text-decoration-none" name="submitButton" value="return">Aflever</button>
@@ -28,6 +28,8 @@
         </div>
     </div>
 </div>
+@if (ViewBag.AvailableComputerAmount <= 0)
+{
 <div class="container d-flex h-100">
     <div class="row mt-1 align-self-center w-100">
         <div class="col-8 offset-2">
@@ -39,6 +41,7 @@
         </div>
     </div>
 </div>
+}
 
 @section scripts {
     <script>
@@ -55,5 +58,7 @@
         document.addEventListener("keyup", (event) => {
             delete keysPressed[event.key];
         });
+
+
     </script>
 }
