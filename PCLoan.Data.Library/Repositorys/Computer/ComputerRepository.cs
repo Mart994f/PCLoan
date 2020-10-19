@@ -32,7 +32,8 @@ namespace PCLoan.Data.Library.Repositorys
         {
             using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
             {
-                return connection.Query<ComputerModelDAO>("GetAvailableComputers", null, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+                return connection.Query<ComputerModelDAO>("GetAvailableComputers", null,
+                                                          commandType: CommandType.StoredProcedure, commandTimeout: 10);
             }
         }
 
@@ -40,18 +41,20 @@ namespace PCLoan.Data.Library.Repositorys
         {
             using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
             {
-                return connection.Query<ComputerModelDAO>("GetAllComputersWithCurrentLoan", null, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+                return connection.Query<ComputerModelDAO>("GetAllComputersWithCurrentLoan", null,
+                                                          commandType: CommandType.StoredProcedure, commandTimeout: 10);
             }
         }
 
-        public int GetComputerIdByName( string name)
+        public int GetComputerIdByName(string name)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@name", name);
 
             using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
             {
-                return connection.ExecuteScalar<int>("GetComputerIdByName", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+                return connection.ExecuteScalar<int>("GetComputerIdByName", parameters,
+                                                     commandType: CommandType.StoredProcedure, commandTimeout: 10);
             }
         }
 
@@ -62,7 +65,21 @@ namespace PCLoan.Data.Library.Repositorys
 
             using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
             {
-                return connection.Execute("DeactivateComputer", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 10);
+                return connection.Execute("DeactivateComputer", parameters, commandType: CommandType.StoredProcedure,
+                                          commandTimeout: 10);
+            }
+        }
+
+        public int UpdateState(int computerId, int stateId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@cimputerId", computerId);
+            parameters.Add("@stateId", stateId);
+
+            using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                return connection.Execute("UpdateState", parameters, commandType: CommandType.StoredProcedure,
+                                          commandTimeout: 10);
             }
         }
 

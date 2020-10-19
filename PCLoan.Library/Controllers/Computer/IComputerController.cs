@@ -1,12 +1,13 @@
 ﻿using PCLoan.Logic.Library.Models;
+using System.Collections.Generic;
 
 namespace PCLoan.Logic.Library.Controllers
 {
     public interface IComputerController
     {
-        void CreateLoan(string username, LoanModelDTO model);
-        LoanModelDTO GetCurrentLoan(string username);
-        LoanModelDTO GetNewLoanModel();
-        void ReturnLoan(string username);
+        List<ComputerModelDTO> GetAvailableComputers();
+        LoanModelDTO GetUsersCurrentLoan(int userID);
+        void RegisterLoan(int userId, LoanModelDTO model);
+        void RegisterLoanReturned(int userId);
     }
 }

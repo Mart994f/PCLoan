@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;
+using System.Collections.Generic;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
@@ -41,14 +42,16 @@ namespace PCLoan.Presentation.Web.Controllers
             //If a computer is lent
             if (action == "loan")
             {
-                model = _mapper.Map<LoanModel>(_computerController.GetNewLoanModel());
+                model = new LoanModel();
+
+                model.Computers = _mapper.Map<List<ComputerModel>>(_computerController.GetAvailableComputers());
                 ViewBag.DropdownButton = "Lån";
             }
             //If a computer is returned
             else if (action == "return")
             {
                 // TODO: Implement username from the Json WebToken
-                model = _mapper.Map<LoanModel>(_computerController.GetCurrentLoan(User.FindFirst("Username").Value));
+                model = _mapper.Map<LoanModel>(_computerController.GetUsersCurrentLoan(int.Parse(User.FindFirst("Id").Value)));
                 ViewBag.DropdownButton = "Aflever";
             }
 
@@ -61,13 +64,13 @@ namespace PCLoan.Presentation.Web.Controllers
             //For lending a computer
             if (Request.Cookies["action"] == "loan")
             {
-                _computerController.CreateLoan(User.FindFirst("Username").Value, _mapper.Map<LoanModelDTO>(model));
+                _computerController.RegisterLoan(int.Parse(User.FindFirst("Id").Value), _mapper.Map<LoanModelDTO>(model));
                 return RedirectToAction("Signout", "Computer");
             }
             //For returning a computer
             else if (Request.Cookies["action"] == "return")
             {
-                _computerController.ReturnLoan(User.FindFirst("Username").Value);
+                _computerController.RegisterLoanReturned(int.Parse(User.FindFirst("Id").Value));
                 return RedirectToAction("Signout", "Computer");
             }
             return View(model);
