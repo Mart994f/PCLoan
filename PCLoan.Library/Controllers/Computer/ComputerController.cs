@@ -47,14 +47,15 @@ namespace PCLoan.Logic.Library.Controllers
         #region Public Methods      
 
         // Create a new loan
-        public bool RegisterLoan(int userId, LoanModelDTO model)
+        public void RegisterLoan(int userId, LoanModelDTO model)
         {
             bool created;
-
             // Check if the user already have a loan, if they do throw a UserAlreadyHaveLoanException..
-            if (CheckIfUserHaveALoan(userId))
+            /*
+            if (CheckIfUserHaveALoan(id))
             {
                 throw new UserAlreadyHaveLoanException("Brugeren har allerede et lån, Prøv igen senere.");
+                
             }
             // else create the loan
             else
@@ -73,9 +74,9 @@ namespace PCLoan.Logic.Library.Controllers
 
                 // and log it
                 // TODO: Implement log
-            }
+            }*/
 
-            return created;
+            //return created;
         }
 
 
@@ -94,7 +95,7 @@ namespace PCLoan.Logic.Library.Controllers
         // Add available computers
         public LoanModelDTO AddAvailableComputers()
         {
-
+            return null; // TODO: Remake method to be functional
         }
 
 
@@ -165,9 +166,9 @@ namespace PCLoan.Logic.Library.Controllers
         #region Private Helper Methods
 
         // Check if user already have a loan
-        private bool CheckIfUserHaveALoan(int userId)
+        private void CheckIfUserHaveALoan(int userId)
         {
-
+            
         }
 
         // Add computer information to the current loan
@@ -200,10 +201,10 @@ namespace PCLoan.Logic.Library.Controllers
         // Update the computers state
         private bool UpdateComputerState(int computerId, States stateId)
         {
-            stateId.
+            
             try
             {
-                _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model));
+                
             }
             catch (Exception)
             {
