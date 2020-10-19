@@ -20,6 +20,7 @@ namespace PCLoan.Presentation.Web.Controllers
 
         public IActionResult Index()
         {
+            //_computerController.GetAvailableComputers
             return View();
         }
 
