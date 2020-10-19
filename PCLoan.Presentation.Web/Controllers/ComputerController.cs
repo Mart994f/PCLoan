@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;
+using System.Collections.Generic;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
@@ -42,14 +43,16 @@ namespace PCLoan.Presentation.Web.Controllers
             //If a computer is lent
             if (action == "loan")
             {
-                model = _mapper.Map<LoanModel>(_computerController.GetNewLoanModel());
+                model = new LoanModel();
+
+                model.Computers = _mapper.Map<List<ComputerModel>>(_computerController.GetAvailableComputers());
                 ViewBag.DropdownButton = "Lån";
             }
             //If a computer is returned
             else if (action == "return")
             {
                 // TODO: Implement username from the Json WebToken
-                model = _mapper.Map<LoanModel>(_computerController.GetCurrentLoan(User.FindFirst("Username").Value));
+                model = _mapper.Map<LoanModel>(_computerController.GetUsersCurrentLoan(int.Parse(User.FindFirst("Id").Value)));
                 ViewBag.DropdownButton = "Aflever";
             }
 
@@ -62,17 +65,32 @@ namespace PCLoan.Presentation.Web.Controllers
             //For lending a computer
             if (Request.Cookies["action"] == "loan")
             {
-                // TODO: Get the right username via Json WebToken
-                _computerController.CreateLoan(User.FindFirst("Username").Value, _mapper.Map<LoanModelDTO>(model));
-                return RedirectToAction("Signout", "Login");
+                _computerController.RegisterLoan(int.Parse(User.FindFirst("Id").Value), _mapper.Map<LoanModelDTO>(model));
+                return RedirectToAction("Signout", "Computer");
             }
             //For returning a computer
             else if (Request.Cookies["action"] == "return")
             {
-                _computerController.ReturnLoan(User.FindFirst("Username").Value);
-                return RedirectToAction("Signout", "Login");
+                _computerController.RegisterLoanReturned(int.Parse(User.FindFirst("Id").Value));
+                return RedirectToAction("Signout", "Computer");
             }
             return View(model);
+        }
+
+        public IActionResult Signout()
+        {
+            ViewBag.LogoutMessage = "Du vil nu blive logget ud";
+
+            if (Request.Cookies["Action"] == "loan")
+            {
+                ViewBag.SignoutMessage = "Du har nu lånt en pc";
+            }
+            else if (Request.Cookies["Action"]  == "return")
+            {
+                ViewBag.SignoutMessage = "Du har nu afleveret din pc";
+            }
+
+            return View();
         }
     }
 }
