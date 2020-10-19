@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PCLoan.Logic.Library.Enums;
+using PCLoan.Logic.Library.Values;
 using PCLoan.Logic.Library.Models;
 using System;
 using System.DirectoryServices.AccountManagement;

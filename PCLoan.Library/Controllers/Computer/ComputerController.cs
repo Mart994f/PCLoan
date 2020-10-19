@@ -6,10 +6,11 @@ using PCLoan.Logic.Library.Models;
 using PCLoan.Logic.Library.Values;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PCLoan.Logic.Library.Controllers
 {
-    public class ComputerController
+    public class ComputerController : IComputerController
     {
         #region Private Fields
 
@@ -17,11 +18,7 @@ namespace PCLoan.Logic.Library.Controllers
 
         private IMapper _mapper;
 
-        private IUserRepository _userRepository;
-
         private IComputerRepository _computerRepository;
-
-        private IStateRepository _stateRepository;
 
         #endregion
 
@@ -31,14 +28,11 @@ namespace PCLoan.Logic.Library.Controllers
 
         #region Constructors
 
-        public ComputerController(ILoanRepository loanRepository, IMapper mapper, IUserRepository userRepository,
-                                  IComputerRepository computerRepository, IStateRepository stateRepository)
+        public ComputerController(ILoanRepository loanRepository, IMapper mapper, IComputerRepository computerRepository)
         {
             _loanRepository = loanRepository;
             _mapper = mapper;
-            _userRepository = userRepository;
             _computerRepository = computerRepository;
-            _stateRepository = stateRepository;
         }
 
         #endregion
@@ -71,7 +65,7 @@ namespace PCLoan.Logic.Library.Controllers
                 if (CreateLoan(model))
                 {
                     // TODO: Log exception occurred
-                    // TODO: Throw LoanNotCreatedException
+                    throw new LoanNotCreatedException("Der skete en fejl ved oprettelsen af lånet.");
                 }
 
                 //  Update the computers state
@@ -82,27 +76,41 @@ namespace PCLoan.Logic.Library.Controllers
             }
         }
 
-        // Return current loan
-        public void ReturnLoan()
+        /// <summary>
+        /// Registers that a user have returned a loan
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        public void RegisterLoanReturned(int userId)
         {
             // Get users current loan
-
-            // Set return date
+            LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderBy(l => l.LoanDate)
+                                                                          .SingleOrDefault(l => l.UserId == userId));
 
             // Save the updated loan
+            ReturnLoan(model.Id);
 
             // Update computers state
+            UpdateComputerState(model.ComputerId, States.ReadyForLoan);
 
             // Log it
+            // TODO: Implement log
         }
 
-        // Get users current loan
-        public void GetUsersCurrentLoan()
+        /// <summary>
+        /// Gets the users current loan 
+        /// </summary>
+        /// <param name="userID">Id of the user</param>
+        /// <returns>A <see cref="LoanModelDTO"/> contaning data about the loan</returns>
+        public LoanModelDTO GetUsersCurrentLoan(int userID)
         {
-
+            return _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(l => l.LoanDate)
+                                                            .Single(l => l.UserId == userID && l.ReturnedDate == null));
         }
 
-        // Add available computers
+        /// <summary>
+        /// Gets all computers som are available for loan
+        /// </summary>
+        /// <returns>A list of all the available computers</returns>
         public List<ComputerModelDTO> GetAvailableComputers()
         {
             return _mapper.Map<List<ComputerModelDTO>>(_computerRepository.GetAvailableComputers());
@@ -161,7 +169,7 @@ namespace PCLoan.Logic.Library.Controllers
             {
                 _loanRepository.ReturnLoan(loanId, DateTime.UtcNow);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // TODO: Implement exception handling
             }
@@ -176,9 +184,9 @@ namespace PCLoan.Logic.Library.Controllers
         {
             try
             {
-                _computerRepository.UpdateState(computerId, stateId);
+                _computerRepository.UpdateState(computerId, int.Parse(stateId.ToString()));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // TODO: Implement exception handling
             }
