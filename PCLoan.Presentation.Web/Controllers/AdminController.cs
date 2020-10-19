@@ -14,12 +14,15 @@ namespace PCLoan.Presentation.Web.Controllers
     //[Authorize(Roles = Role.EmployeeOrAdministrator)]
     public class AdminController : Controller
     {
+        private IComputerController _computerController;
+
         private IAdminController _adminController;
 
         private IMapper _mapper;
 
-        public AdminController(IAdminController adminController, IMapper mapper)
+        public AdminController(IAdminController adminController, IMapper mapper, IComputerController computerController)
         {
+            _computerController = computerController;
             _adminController = adminController;
             _mapper = mapper;
         }
@@ -27,6 +30,7 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController
         public ActionResult Index()
         {
+            ViewBag.AvailableComputerAmount = _computerController.GetAvailableComputers().Count;
             IEnumerable<ComputerModel> models = _mapper.Map<IEnumerable<ComputerModel>>(_adminController.GetAllComputersWithCurrentLoan());
 
             return View(models);
