@@ -51,7 +51,6 @@ namespace PCLoan.Presentation.Web.Controllers
             //If a computer is returned
             else if (action == "return")
             {
-                // TODO: Implement username from the Json WebToken
                 model = _mapper.Map<LoanModel>(_computerController.GetUsersCurrentLoan(int.Parse(User.FindFirst("Id").Value)));
                 ViewBag.DropdownButton = "Aflever";
             }
