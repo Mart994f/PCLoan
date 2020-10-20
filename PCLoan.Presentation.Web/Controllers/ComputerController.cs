@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
+using PCLoan.Logic.Library.Exceptions;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;
 using System.Collections.Generic;
@@ -45,14 +46,21 @@ namespace PCLoan.Presentation.Web.Controllers
             {
                 model = new LoanModel();
 
-                model.Computers = _mapper.Map<List<ComputerModel>>(_computerController.GetAvailableComputers());
                 ViewBag.DropdownButton = "Lån";
+                model.Computers = _mapper.Map<List<ComputerModel>>(_computerController.GetAvailableComputers());
             }
             //If a computer is returned
             else if (action == "return")
             {
-                model = _mapper.Map<LoanModel>(_computerController.GetUsersCurrentLoan(int.Parse(User.FindFirst("Id").Value)));
                 ViewBag.DropdownButton = "Aflever";
+                try
+                {
+                    model = _mapper.Map<LoanModel>(_computerController.GetUsersCurrentLoan(int.Parse(User.FindFirst("Id").Value)));
+                }
+                catch (UserHaveNoLoanException ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                }              
             }
             
             return View(model);

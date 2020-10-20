@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PCLoan.Data.Library.Models;
 using PCLoan.Data.Library.Repositorys;
+using PCLoan.Logic.Library.Exceptions;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Logic.Library.Services;
+using PCLoan.Logic.Library.Values;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -120,10 +122,18 @@ namespace PCLoan.Logic.Library.Controllers
 
         public void DeactivateComputer(int id)
         {
-            _computerRepository.DeactivateComputer(id);
 
-            // and log it
-            // TODO: implement logging to log
+            if (GetState(id) == State.ReadyForLoan)
+            {
+                _computerRepository.DeactivateComputer(id);
+
+                // and log it
+                // TODO: implement logging to log
+            }
+            else
+            {
+                throw new CanNotDeleteComputerException("Computeren kan ikke slettes når der er et aktivt lån");
+            }
         }
 
         public List<StateModelDTO> GetStates()
@@ -140,6 +150,11 @@ namespace PCLoan.Logic.Library.Controllers
             IEnumerable<LoanModelDTO> loans = _mapper.Map<IEnumerable<LoanModelDTO>>(_loanRepository.GetAll());
 
             return loans.Where(l => l.ComputerId == computerId).OrderByDescending(l => l.LoanDate).ThenByDescending(l => l.Id).FirstOrDefault();
+        }
+
+        private State GetState(int computerId)
+        {
+            return (State)_computerRepository.Get(computerId).StateId;
         }
 
         #endregion

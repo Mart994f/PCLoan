@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PCLoan.Logic.Library.Controllers;
+using PCLoan.Logic.Library.Exceptions;
 using PCLoan.Logic.Library.Models;
 using PCLoan.Presentation.Web.Models;
 using System;
@@ -121,10 +122,12 @@ namespace PCLoan.Presentation.Web.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (CanNotDeleteComputerException ex)
             {
-                return View(model);
+                ViewBag.ErrorMessage = ex.Message;
             }
+
+            return View(model);
         }
 
         public ActionResult OpenKiosk()

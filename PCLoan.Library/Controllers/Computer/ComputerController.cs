@@ -69,7 +69,7 @@ namespace PCLoan.Logic.Library.Controllers
                 }
 
                 //  Update the computers state
-                UpdateComputerState(model.ComputerId, States.Lend);
+                UpdateComputerState(model.ComputerId, State.Lend);
 
                 // Log it
                 // TODO: Implement log
@@ -84,13 +84,13 @@ namespace PCLoan.Logic.Library.Controllers
         {
             // Get users current loan
             LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderBy(l => l.LoanDate)
-                                                                          .SingleOrDefault(l => l.UserId == userId && l.ReturnedDate == null));
+                .SingleOrDefault(l => l.UserId == userId && l.ReturnedDate == null));
 
             // Save the updated loan
             ReturnLoan(model.Id);
 
             // Update computers state
-            UpdateComputerState(model.ComputerId, States.ReadyForLoan);
+            UpdateComputerState(model.ComputerId, State.ReadyForLoan);
 
             // Log it
             // TODO: Implement log
@@ -109,6 +109,11 @@ namespace PCLoan.Logic.Library.Controllers
             {
                 _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId))
             };
+
+            if (model.Computers.Count <= 0)
+            {
+                throw new UserHaveNoLoanException("Du har ikke nogle aktive lån, og kan derfor ikke aflevære en computer");
+            }
 
             return model;
         }
@@ -186,7 +191,7 @@ namespace PCLoan.Logic.Library.Controllers
         /// </summary>
         /// <param name="computerId">Id of the computer to update</param>
         /// <param name="stateId">Id of the new state</param>
-        private void UpdateComputerState(int computerId, States stateId)
+        private void UpdateComputerState(int computerId, State stateId)
         {
             try
             {

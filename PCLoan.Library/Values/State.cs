@@ -1,6 +1,6 @@
 ﻿namespace PCLoan.Logic.Library.Values
 {
-    public enum States
+    public enum State
     {
         ReadyForLoan = 1,
         Lend = 2,
