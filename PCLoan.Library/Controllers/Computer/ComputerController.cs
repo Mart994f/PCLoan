@@ -103,8 +103,14 @@ namespace PCLoan.Logic.Library.Controllers
         /// <returns>A <see cref="LoanModelDTO"/> contaning data about the loan</returns>
         public LoanModelDTO GetUsersCurrentLoan(int userID)
         {
-            return _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(l => l.LoanDate)
-                                                            .Single(l => l.UserId == userID && l.ReturnedDate == null));
+            LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(l => l.LoanDate).Single(l => l.UserId == userID && l.ReturnedDate == null));
+
+            model.Computers = new List<ComputerModelDTO>
+            {
+                _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId))
+            };
+
+            return model;
         }
 
         /// <summary>

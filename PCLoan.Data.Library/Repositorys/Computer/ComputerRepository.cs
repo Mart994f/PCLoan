@@ -73,7 +73,7 @@ namespace PCLoan.Data.Library.Repositorys
         public int UpdateState(int computerId, int stateId)
         {
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@cimputerId", computerId);
+            parameters.Add("@computerId", computerId);
             parameters.Add("@stateId", stateId);
 
             using (IDbConnection connection = new SqlConnection(CONNECTION_STRING))
