@@ -99,5 +99,11 @@ namespace PCLoan.Presentation.Web.Controllers
 
             return View();
         }
+
+        public IActionResult Exception()
+        {
+            ViewBag.LogoutMessage = "Du vil nu blive logget ud";
+            return View();
+        }
     }
 }

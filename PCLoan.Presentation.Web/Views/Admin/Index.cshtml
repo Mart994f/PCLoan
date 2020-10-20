@@ -13,8 +13,8 @@
         <p class="text-right mt-2 mr-2">@Html.ActionLink("Tilføj Pc", "Create", null, new { @class = "btn btn-primary" })</p>
     </div>
 </div>
-    
-    <!--IDEA: Display number of remaining available computers here-->
+
+<!--IDEA: Display number of remaining available computers here-->
 <div>
     <h3 class="ml-3 font-weight-light">Der er @ViewBag.AvailableComputerAmount ledige computere tilbage</h3>
 </div>
@@ -50,3 +50,13 @@
 
     </tbody>
 </table>
+@section scripts {
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+    {
+        <text>
+            $(document).ready(function() {
+            alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
+            });
+        </text>
+    }
+}
