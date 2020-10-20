@@ -30,12 +30,8 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController
         public ActionResult Index()
         {
-<<<<<<< HEAD
             ViewBag.AvailableComputerAmount = _computerController.GetAvailableComputers().Count;
-            IEnumerable<ComputerModel> models = _mapper.Map<IEnumerable<ComputerModel>>(_adminController.GetAllComputersWithCurrentLoan());
-=======
             IEnumerable<ComputerModel> models = _mapper.Map<IEnumerable<ComputerModel>>(_adminController.GetComputersWithLoan());
->>>>>>> 57f3cd44bf35f7c38019a315032ab4cd0494308f
 
             return View(models);
         }
