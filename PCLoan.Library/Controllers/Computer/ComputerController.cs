@@ -84,7 +84,7 @@ namespace PCLoan.Logic.Library.Controllers
         {
             // Get users current loan
             LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderBy(l => l.LoanDate)
-                                                                          .SingleOrDefault(l => l.UserId == userId));
+                                                                          .SingleOrDefault(l => l.UserId == userId && l.ReturnedDate == null));
 
             // Save the updated loan
             ReturnLoan(model.Id);
