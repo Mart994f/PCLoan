@@ -49,116 +49,97 @@ namespace PCLoan.Logic.Library.Controllers
 
         #region Public Methods
 
-        public ComputerModelDTO GetComputer(int id)
+        public void CreateComputer(int userId, ComputerModelDTO model)
         {
-            ComputerModelDTO computer = _mapper.Map<ComputerModelDTO>(_computerRepository.Get(id));
+            // Create the new computer..
+            _computerRepository.Insert(_mapper.Map<ComputerModelDAO>(model));
 
-            computer.States = _mapper.Map<IEnumerable<StateModelDTO>>(_stateRepository.GetAll()).ToList();
+            // and log it
+            // TODO: implement logging to log
+        }
 
-            LoanModelDTO loan = _mapper.Map<IEnumerable<LoanModelDTO>>(_loanRepository.GetAll())
-                                       .Where(l => l.ComputerId == computer.Id)
-                                       .OrderByDescending(l => l.LoanDate)
-                                       .FirstOrDefault();
+        public ComputerModelDTO GetComputerWithLoan(int id)
+        {
+            // Get the ComputerModel
+            ComputerModelDTO computerModel = _mapper.Map<ComputerModelDTO>(_computerRepository.Get(id));
 
-            if (loan != null)
+            // Add available states, and add them to the ComputerModel
+            computerModel.States = GetStates();
+
+            // Get latest loan, if any
+            LoanModelDTO loanModel = GetLatestLoan(computerModel.Id);
+
+            // If the computer have been lend before
+            if (loanModel != null)
             {
-                computer.LendBy = _userRepository.GetUsernameById(loan.UserId);
+                // then add the loan data
+                computerModel.LoanDate = loanModel.LoanDate;
+                computerModel.ReturnedDate = loanModel.ReturnedDate;
+                computerModel.LendBy = _userRepository.GetUsernameById(loanModel.UserId);
+            }
 
-                if (loan.LoanDate != null)
-                {
-                    computer.LoanDate = loan.LoanDate;
-                }
+            // And finally return it to the view controller
+            return computerModel;
+        }
 
-                if (loan.ReturnedDate != null)
+        public List<ComputerModelDTO> GetComputersWithLoan()
+        {
+            // Get the list ComputerModels
+            List<ComputerModelDTO> computers = _mapper.Map<List<ComputerModelDTO>>(_computerRepository.GetAll()).Where(c => c.Deactivated != true).ToList();
+
+            foreach (ComputerModelDTO computer in computers)
+            {
+                // Add available states, and add them to the ComputerModel
+                computer.States = GetStates();
+
+                // Get latest loan, if any
+                LoanModelDTO loanModel = GetLatestLoan(computer.Id);
+
+                // If the computer have been lend before
+                if (loanModel != null)
                 {
-                    computer.ReturnedDate = loan.ReturnedDate;
+                    // then add the loan data
+                    computer.LoanDate = loanModel.LoanDate;
+                    computer.ReturnedDate = loanModel.ReturnedDate;
+                    computer.LendBy = _userRepository.GetUsernameById(loanModel.UserId);
                 }
             }
 
-            return computer;
-        }
-
-        public ComputerModelDTO GetNewComputerModel()
-        {
-            ComputerModelDTO model = new ComputerModelDTO();
-            model.States = _mapper.Map<IEnumerable<StateModelDTO>>(_stateRepository.GetAll()).ToList();
-
-            return model;
-        }
-
-        public IEnumerable<ComputerModelDTO> GetAllComputersWithCurrentLoan()
-        {
-            IEnumerable<ComputerModelDTO> computers = _mapper.Map<IEnumerable<ComputerModelDTO>>(_computerRepository.GetAll()).Where(c => c.Deactivated != true);
-
-            computers = AddStatesToComputer(computers);
-            computers = MapLoanToComputer(computers);
-
+            // And finally return it to the view controller
             return computers;
         }
 
-        public void CreateComputer(string username, ComputerModelDTO model, string state)
-        {
-            _computerRepository.Insert(_mapper.Map<ComputerModelDAO>(model));
-            // _loggingService.Log(_userRepository.GetIdByname(username), $"created computer {model.Name}, with state {state}", _computerRepository.GetComputerIdByName(model.Name));
-
-        }
 
         public void UpdateComputer(ComputerModelDTO model)
         {
             _computerRepository.Update(_mapper.Map<ComputerModelDAO>(model));
+
+            // and log it
+            // TODO: implement logging to log
         }
 
         public void DeactivateComputer(int id)
         {
             _computerRepository.DeactivateComputer(id);
+
+            // and log it
+            // TODO: implement logging to log
         }
 
-        public StateModelDTO GetState(int id)
+        public List<StateModelDTO> GetStates()
         {
-            return _mapper.Map<StateModelDTO>(_stateRepository.Get(id));
+            return _mapper.Map<List<StateModelDTO>>(_stateRepository.GetAll());
         }
 
         #endregion
 
         #region Private Helper Methods
 
-        private IEnumerable<ComputerModelDTO> AddStatesToComputer(IEnumerable<ComputerModelDTO> computers)
-        {
-            IEnumerable<StateModelDTO> states = _mapper.Map<IEnumerable<StateModelDTO>>(_stateRepository.GetAll());
-
-            foreach (ComputerModelDTO computer in computers)
-            {
-                computer.States = states.ToList();
-            }
-
-            return computers;
-        }
-
-        private IEnumerable<ComputerModelDTO> MapLoanToComputer(IEnumerable<ComputerModelDTO> computers)
+        private LoanModelDTO GetLatestLoan(int computerId)
         {
             IEnumerable<LoanModelDTO> loans = _mapper.Map<IEnumerable<LoanModelDTO>>(_loanRepository.GetAll());
 
-            foreach (ComputerModelDTO computer in computers)
-            {
-                LoanModelDTO loan = loans.Where(l => l.ComputerId == computer.Id).OrderByDescending(l => l.LoanDate).ThenByDescending(l => l.Id).FirstOrDefault();
-
-                if (loan != null)
-                {
-                    computer.LendBy = _userRepository.GetUsernameById(loan.UserId);
-
-                    if (loan.LoanDate != null)
-                    {
-                        computer.LoanDate = loan.LoanDate;
-                    }
-
-                    if (loan.ReturnedDate != null)
-                    {
-                        computer.ReturnedDate = loan.ReturnedDate;
-                    }
-                }
-            }
-
-            return computers;
+            return loans.Where(l => l.ComputerId == computerId).OrderByDescending(l => l.LoanDate).ThenByDescending(l => l.Id).FirstOrDefault();
         }
 
         #endregion
