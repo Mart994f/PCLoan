@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Exception";
+    Layout = "_LayoutWithoutNavbar";
+}
+
+<div style="margin-top: 15%">
+    <div class="row mt-5">
+        <div class="col-12">
+            <p class="display-2 text-center">Åh nej! Der er opstået en fejl</p>
+        </div>
+    </div>
+            <hr />
+    <div class="row mt-5">
+        <div class="col-12">
+            <p class="text-center display-4">@ViewBag.ErrorMessage Such error message</p>
+            <h3 id="countdown" class="text-center mt-5">@ViewBag.LogoutMessage</h3>
+        </div>
+    </div>
+</div>
+<div class="row mt-2 justify-content-center">
+    <button class="btn btn-secondary btn-lg px-5 py-3 font-weight-bolder">OK</button>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var seconds = 15;
+        function countdown() {
+            seconds = seconds - 1;
+            if (seconds < 0) {
+                window.location = "https://localhost:44367/Computer/index";
+            }
+            else {
+                window.setTimeout("countdown()", 1000);
+            }
+        };
+        countdown();
+    </script>
+}

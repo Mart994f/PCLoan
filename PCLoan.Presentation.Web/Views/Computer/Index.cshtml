@@ -4,35 +4,36 @@
     Layout = "_LayoutWithoutNavbar";
 }
 
-
-<div class="container d-flex h-100">
-    <div class="row align-self-center w-100">
-        <div class="col-12 mx-auto mb-5">
-            <p class="display-3 text-center">Hvad vil du?</p>
+<div style="margin-top: 20%">
+    <div class="container d-flex h-100">
+        <div class="row align-self-center w-100">
+            <div class="col-12 mx-auto mb-5">
+                <p class="display-3 text-center">Hvad vil du?</p>
+            </div>
         </div>
     </div>
-</div>
-<div class="container d-flex h-100">
-    <div class="row align-self-center w-100">
-        <div class="col-10 offset-1">
-            @using (Html.BeginForm("Index", "Computer", FormMethod.Post))
-            {
-                <div id="action" class="row text-center">
-                    <div class="col-6 text-left">
-                        @if (ViewBag.AvailableComputerAmount <= 0)
-                        {
-                            <button type="submit" class="btn btn-success p-3 text-decoration-none" name="submitButton" value="loan" disabled="disabled">Udlån</button>
-                        }
-                        else
-                        {
-                            <button type="submit" class="btn btn-success p-3 text-decoration-none" name="submitButton" value="loan">Udlån</button>
-                        }
+    <div class="container d-flex h-100">
+        <div class="row align-self-center w-100">
+            <div class="col-10 offset-1">
+                @using (Html.BeginForm("Index", "Computer", FormMethod.Post))
+                {
+                    <div id="action" class="row text-center">
+                        <div class="col-6 text-left">
+                            @if (ViewBag.AvailableComputerAmount <= 0)
+                            {
+                                <button type="submit" class="btn btn-success p-3 text-decoration-none" name="submitButton" value="loan" disabled="disabled">Udlån</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-success p-3 text-decoration-none" name="submitButton" value="loan">Udlån</button>
+                            }
+                        </div>
+                        <div class="col-6 text-right">
+                            <button type="submit" class="btn btn-danger p-3 text-decoration-none" name="submitButton" value="return">Aflever</button>
+                        </div>
                     </div>
-                    <div class="col-6 text-right">
-                        <button type="submit" class="btn btn-danger p-3 text-decoration-none" name="submitButton" value="return">Aflever</button>
-                    </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 </div>
