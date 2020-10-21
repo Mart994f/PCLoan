@@ -50,7 +50,7 @@ namespace PCLoan.Logic.Library.Controllers
             if (CheckUserHaveLoan(userId))
             {
                 // TODO: Log exception occurred
-                throw new UserAlreadyHaveLoanException("Brugeren har allerede et lån, og kan derfor ikke låne igen.");
+                throw new UserAlreadyHaveLoanException("Du har allerede et lån, og kan derfor ikke låne igen.");
             }
             // else create the loan
             else
@@ -103,19 +103,22 @@ namespace PCLoan.Logic.Library.Controllers
         /// <returns>A <see cref="LoanModelDTO"/> contaning data about the loan</returns>
         public LoanModelDTO GetUsersCurrentLoan(int userID)
         {
-            LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(l => l.LoanDate).Single(l => l.UserId == userID && l.ReturnedDate == null));
-
-            model.Computers = new List<ComputerModelDTO>
+            try
             {
-                _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId))
-            };
+                LoanModelDTO model = _mapper.Map<LoanModelDTO>(_loanRepository.GetAll().OrderByDescending(l => l.LoanDate).Single(l => l.UserId == userID && l.ReturnedDate == null));
 
-            if (model.Computers.Count <= 0)
+                model.Computers = new List<ComputerModelDTO>
+                {
+                    _mapper.Map<ComputerModelDTO>(_computerRepository.Get(model.ComputerId))
+                };
+
+                return model;
+            }
+            catch (Exception)
             {
                 throw new UserHaveNoLoanException("Du har ikke nogle aktive lån, og kan derfor ikke aflevære en computer");
             }
 
-            return model;
         }
 
         /// <summary>

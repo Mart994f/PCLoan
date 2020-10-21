@@ -87,3 +87,7 @@ body {
     background-color: lightgray;
     color: #555;
 }
+
+.disabled {
+    cursor: text;
+}

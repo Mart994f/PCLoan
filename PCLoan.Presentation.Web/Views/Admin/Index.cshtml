@@ -36,27 +36,32 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@item.States.FirstOrDefault(s => s.Id == item.StateId).State</td>
+                <td>@Html.DisplayFor(modelItem => item.StateText)</td>
                 <td>@Html.DisplayFor(modelItem => item.LendBy)</td>
                 <td>@Html.DisplayFor(modelItem => item.LoanDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.ReturnedDate)</td>
                 <td class="text-right">
-                    @Html.ActionLink("Rediger", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    @if (item.StateId == (int)PCLoan.Logic.Library.Values.State.Lend)
+                    {
+                        @Html.ActionLink("Rediger", "Edit", new { id = item.Id }, new { @class = "btn btn-secondary disabled", onclick = "javascript:return false;" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Rediger", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    }
+
                     @Html.ActionLink("Detaljer", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-                    @Html.ActionLink("Slet", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                    @if (item.StateId == (int)PCLoan.Logic.Library.Values.State.Lend)
+                    {
+                        @Html.ActionLink("Slet", "Delete", new { id = item.Id }, new { @class = "btn btn-secondary disabled", onclick = "javascript:return false;" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Slet", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                    }
                 </td>
             </tr>
         }
 
     </tbody>
 </table>
-@section scripts {
-    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
-    {
-        <text>
-            $(document).ready(function() {
-            alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
-            });
-        </text>
-    }
-}
