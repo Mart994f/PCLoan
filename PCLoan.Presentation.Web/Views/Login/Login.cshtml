@@ -28,14 +28,9 @@
                         @Html.LabelFor(m => m.Password, new { @lass = "control-label" })
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4 offset-4">
-                    <div class="lgnfail text-danger">
-                        <!--Validation message for failed login, DONT specify which one is false!-->
-                        @ViewBag.FailedLogin
+                        <div class="text-danger">
+                            @ViewBag.FailedLogin
+                        </div>
                     </div>
                 </div>
             </div>
