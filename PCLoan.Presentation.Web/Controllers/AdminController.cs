@@ -125,7 +125,7 @@ namespace PCLoan.Presentation.Web.Controllers
             catch (CanNotDeleteComputerException ex)
             {
                 ViewBag.ErrorMessage = ex.Message;
-                return RedirectToAction("Exception", "Computer");
+                return RedirectToAction("Exception", "Computer", ex);
             }
 
             return View(model);
