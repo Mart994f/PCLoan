@@ -1,0 +1,29 @@
+﻿@model IEnumerable<PCLoan.Presentation.Web.Models.LogModel>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(model => model.Timestamp)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Username)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Description)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Computername)</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Timestamp)</td>
+            <td>@Html.DisplayFor(modelItem => item.Username)</td>
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+            <td>@Html.DisplayFor(modelItem => item.Computername)</td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,49 @@
+﻿@using PCLoan.Presentation.Web.Models
+@model Tuple<List<LogModel>, SearchModel>
+
+@{
+    ViewBag.Title = "Admin List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var search = Model.Item2;
+}
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="h1 font-weight-light ml-3">ZBC Computer Udlån - Log</h2>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-6">
+        <h3 class="h4 font-weight-light ml-3">Søg efter bruger</h3>
+        @using (Html.BeginForm("SearchUser", "Admin", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row mt-2">
+                <div class="col-6">
+                    @Html.TextBox("username", search.Username,null, new { @class = "form-control", autocomplete = "off" })
+                </div>
+                <div class="col-2">
+                    <input type="submit" class="btn btn-primary" value="Søg" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-6">
+        <h3 class="h4 font-weight-light ml-3">Søg efter computer</h3>
+        @using (Html.BeginForm("SearchComputer", "Admin", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row mt-2">
+                <div class="col-6">
+                    @Html.DropDownList("computerId", new SelectList(search.Computers, "Id", "Name"), "---- Vælg Computer ----", new { @class = "form-control" })
+                </div>
+                <div class="col-2">
+                    <input type="submit" class="btn btn-primary" value="Søg" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@Html.Partial("~/Views/Admin/SearchResult.cshtml", Model.Item1)

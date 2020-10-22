@@ -31,6 +31,7 @@ namespace PCLoan.Presentation.Web
             services.AddScoped<ILoginController, LdapLoginController>();
             services.AddScoped<IAdminController, AdminController>();
             services.AddScoped<IComputerController, ComputerController>();
+            services.AddScoped<ILogController, LogController>();
 
             services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
             services.AddScoped<IAuthorizationService, LdapAuthorizationService>();
