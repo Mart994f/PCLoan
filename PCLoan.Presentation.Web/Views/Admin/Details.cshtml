@@ -75,7 +75,15 @@
     <div class="col-6 offset-3">
         <div class="row">
             <div class="col-6 text-right">
-                @Html.ActionLink("Rediger", "Edit", new { id = Model.Id })
+                @if (Model.StateId == (int)PCLoan.Logic.Library.Values.State.Lend)
+                {
+                    @Html.ActionLink("Rediger", "Edit", new { id = Model.Id }, new { @class = "text-secondary disabled", onclick = "javascript:return false;" })
+
+                }
+                else
+                {
+                    @Html.ActionLink("Rediger", "Edit", new { id = Model.Id })
+                }
             </div>
             <div class="col-6">
                 @Html.ActionLink("Tilbage til oversigt", "Index")

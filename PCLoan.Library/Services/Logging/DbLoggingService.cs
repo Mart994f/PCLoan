@@ -16,10 +16,6 @@ namespace PCLoan.Logic.Library.Services
 
         #endregion
 
-        #region Public Properties
-
-        #endregion
-
         #region Constructors
 
         public DbLoggingService(ILogRepository logRepository, IMapper mapper)
@@ -42,12 +38,15 @@ namespace PCLoan.Logic.Library.Services
                 Description = description
             };
 
-            _logRepository.Insert(_mapper.Map<LogModelDAO>(log));
+            try
+            {
+                _logRepository.Insert(_mapper.Map<LogModelDAO>(log));
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
-
-        #endregion
-
-        #region Private Helper Methods
 
         #endregion
     }

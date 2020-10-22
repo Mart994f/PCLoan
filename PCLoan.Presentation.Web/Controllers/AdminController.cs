@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Exceptions;
 using PCLoan.Logic.Library.Models;
@@ -8,12 +8,11 @@ using PCLoan.Logic.Library.Values;
 using PCLoan.Presentation.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
     // TODO: Re-enable authorize
-    //[Authorize(Roles = Role.EmployeeOrAdministrator)]
+    //[Authorize(Roles = Role.Administrator)]
     public class AdminController : Controller
     {
         private IComputerController _computerController;
@@ -68,7 +67,7 @@ namespace PCLoan.Presentation.Web.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View(model);
             }
@@ -94,7 +93,7 @@ namespace PCLoan.Presentation.Web.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View(model);
             }
@@ -123,8 +122,6 @@ namespace PCLoan.Presentation.Web.Controllers
             {
                 return RedirectToAction("Exception", "Computer", new { errorMessage = ex.Message });
             }
-
-            return View(model);
         }
 
         public ActionResult OpenKiosk()

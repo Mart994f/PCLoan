@@ -8,6 +8,7 @@
     <div class="container" id="login">
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
+            @Html.AntiForgeryToken()
             <div class="row">
                 <div class="col-4 offset-4 text-center">
                     <p class="display-3">Log ind</p>
@@ -17,7 +18,7 @@
                 <div class="col-4 offset-4">
                     <div class="form-group">
                         @Html.LabelFor(m => m.UserName, new { @lass = "control-label" })
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control p-2" })
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control p-2", autocomplete = "off" })
                         @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                     </div>
                 </div>

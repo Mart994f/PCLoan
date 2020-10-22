@@ -91,3 +91,7 @@ body {
 .disabled {
     cursor: text;
 }
+
+.disabled:hover {
+    text-decoration: none;
+}

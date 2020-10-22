@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PCLoan.Presentation.Web</title>
+    <title>@ViewData["Title"] - ZBC Computer Udlån</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -17,7 +17,14 @@
 
     <footer class="border-top footer text-muted">
         <div class="container text-center">
-            &copy; 2020 - PCLoan - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @if (DateTime.Now.Year == 2020)
+            {
+                <p>ZBC Computer Udlån &copy; 2020</p>
+            }
+            else
+            {
+                <p>ZBC Computer Udlån &copy; 2020 - @DateTime.Now.Year</p>
+            }
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

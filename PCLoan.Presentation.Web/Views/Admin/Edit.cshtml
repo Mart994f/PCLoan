@@ -22,7 +22,7 @@
         <div class="row">
             <div class="form-group col-4 offset-4">
                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger form-text" })
             </div>
         </div>
