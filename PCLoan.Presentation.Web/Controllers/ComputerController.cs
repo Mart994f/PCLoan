@@ -59,7 +59,7 @@ namespace PCLoan.Presentation.Web.Controllers
                 }
                 catch (UserHaveNoLoanException ex)
                 {
-                    ViewBag.ErrorMessage = ex.Message;
+                    return RedirectToAction("Exception", "Computer", new { errorMessage = ex.Message });
                 }              
             }
             
@@ -72,8 +72,19 @@ namespace PCLoan.Presentation.Web.Controllers
             //For lending a computer
             if (Request.Cookies["action"] == "loan")
             {
-                _computerController.RegisterLoan(int.Parse(User.FindFirst("Id").Value), _mapper.Map<LoanModelDTO>(model));
-                return RedirectToAction("Signout", "Computer");
+                try
+                {
+                    _computerController.RegisterLoan(int.Parse(User.FindFirst("Id").Value), _mapper.Map<LoanModelDTO>(model));
+                    return RedirectToAction("Signout", "Computer");
+                }
+                catch (UserAlreadyHaveLoanException ex)
+                {
+                    return RedirectToAction("Exception", "Computer", new { errorMessage = ex.Message });
+                }
+                catch (LoanNotCreatedException ex)
+                {
+                    return RedirectToAction("Exception", "Computer", new { errorMessage = ex.Message });
+                }
             }
             //For returning a computer
             else if (Request.Cookies["action"] == "return")
@@ -100,9 +111,11 @@ namespace PCLoan.Presentation.Web.Controllers
             return View();
         }
 
-        public IActionResult Exception()
+        public IActionResult Exception(string errorMessage)
         {
             ViewBag.LogoutMessage = "Du vil nu blive logget ud";
+            ViewBag.ErrorMessage = errorMessage;
+
             return View();
         }
     }

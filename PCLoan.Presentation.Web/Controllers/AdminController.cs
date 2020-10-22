@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Exceptions;
 using PCLoan.Logic.Library.Models;
+using PCLoan.Logic.Library.Values;
 using PCLoan.Presentation.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -51,16 +52,14 @@ namespace PCLoan.Presentation.Web.Controllers
             ComputerModel model = new ComputerModel();
 
             model.States = _mapper.Map<List<StateModel>>(_adminController.GetStates());
-
-            var states = from Models.StateModel t in model.States select new SelectListItem { Value = t.Id.ToString(), Text = t.State };
-            ViewBag.States = states;
+            model.States.Remove(model.States.Find(s => s.Id == (int)State.Lend));
 
             return View(model);
         }
 
         // POST: AdminController/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(ComputerModel model)
         {
             try
@@ -79,9 +78,7 @@ namespace PCLoan.Presentation.Web.Controllers
         public ActionResult Edit(int id)
         {
             ComputerModel model = _mapper.Map<ComputerModel>(_adminController.GetComputerWithLoan(id));
-
-            var states = from Models.StateModel t in model.States select new SelectListItem { Value = t.Id.ToString(), Text = t.State };
-            ViewBag.States = states;
+            model.States.Remove(model.States.Find(s => s.Id == (int)State.Lend));
 
             return View(model);
         }
@@ -124,8 +121,7 @@ namespace PCLoan.Presentation.Web.Controllers
             }
             catch (CanNotDeleteComputerException ex)
             {
-                ViewBag.ErrorMessage = ex.Message;
-                return RedirectToAction("Exception", "Computer");
+                return RedirectToAction("Exception", "Computer", new { errorMessage = ex.Message });
             }
 
             return View(model);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace PCLoan.Presentation.Web.Models
 {
@@ -17,6 +18,21 @@ namespace PCLoan.Presentation.Web.Models
         public int StateId { get; set; }
 
         public List<StateModel> States { get; set; }
+
+        public string StateText
+        {
+            get 
+            {
+                if (States != null && States.Count > 0)
+                {
+                    return States.FirstOrDefault(s => s.Id == StateId).State;
+                }
+                else
+                {
+                    return "N/A";
+                }
+            }
+        }
 
         [Display(Name = "Udlånt til")]
         public string LendBy { get; set; }
