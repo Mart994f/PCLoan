@@ -15,14 +15,14 @@ namespace PCLoan.Presentation.Web.Models
         /// <summary>
         /// The users username.
         /// </summary>
-        [Required] 
+        [Required(ErrorMessage = "Indtast venligst et brugernavn")] 
         [Display(Name = "Brugernavn")]
         public string UserName { get; set; }
 
         /// <summary>
         /// The users password.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Indtast venligst en adgangskode")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

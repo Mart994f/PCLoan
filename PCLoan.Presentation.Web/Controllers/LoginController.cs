@@ -43,6 +43,7 @@ namespace PCLoan.Presentation.Web.Controllers
                         return RedirectToAction("Index", "Admin");
                     }
                 }
+                ViewBag.FailedLogin = "Brugernavn eller adgangskode er forkert";
             }
 
             return View(model);
