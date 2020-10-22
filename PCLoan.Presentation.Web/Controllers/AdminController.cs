@@ -69,6 +69,8 @@ namespace PCLoan.Presentation.Web.Controllers
             }
             catch (Exception)
             {
+                model.States = _mapper.Map<List<StateModel>>(_adminController.GetStates());
+
                 return View(model);
             }
         }
@@ -95,6 +97,8 @@ namespace PCLoan.Presentation.Web.Controllers
             }
             catch (Exception)
             {
+                model.States = _mapper.Map<List<StateModel>>(_adminController.GetStates());
+
                 return View(model);
             }
         }

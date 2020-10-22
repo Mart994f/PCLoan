@@ -123,17 +123,15 @@ namespace PCLoan.Logic.Library.Controllers
         public void DeactivateComputer(int id)
         {
 
-            if (GetState(id) == State.ReadyForLoan)
-            {
-                _computerRepository.DeactivateComputer(id);
-
-                // and log it
-                // TODO: implement logging to log
-            }
-            else
+            if (GetState(id) == State.Lend)
             {
                 throw new CanNotDeleteComputerException("Computeren kan ikke slettes når der er et aktivt lån");
             }
+
+            _computerRepository.DeactivateComputer(id);
+
+            // and log it
+            // TODO: implement logging to log
         }
 
         public List<StateModelDTO> GetStates()
