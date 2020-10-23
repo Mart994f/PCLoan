@@ -23,7 +23,7 @@ namespace PCLoan.Presentation.Web.Controllers
 
         private IComputerController _computerController;
 
-        private readonly ILogController _logController;
+        private ILogController _logController;
 
         public AdminController(IAdminController adminController, IMapper mapper, IComputerController computerController, ILogController logController)
         {
@@ -158,7 +158,7 @@ namespace PCLoan.Presentation.Web.Controllers
             }
             else
             {
-                logs = _mapper.Map<List<LogModel>>(_logController.SearchUser(username));
+                logs = _mapper.Map<List<LogModel>>(_logController.GetLogByUsername(username));
             }
 
             tuple = new Tuple<List<LogModel>, SearchModel>(logs, searchModel);
@@ -180,7 +180,7 @@ namespace PCLoan.Presentation.Web.Controllers
             }
             else
             {
-                logs = _mapper.Map<List<LogModel>>(_logController.SearchComputer(computerId));
+                logs = _mapper.Map<List<LogModel>>(_logController.GetLogByComputerId(computerId));
             }
 
             tuple = new Tuple<List<LogModel>, SearchModel>(logs, searchModel);
