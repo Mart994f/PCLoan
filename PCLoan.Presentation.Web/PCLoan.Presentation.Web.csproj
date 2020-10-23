@@ -14,11 +14,7 @@
 
   <ItemGroup>
 
-    <ProjectReference Include="..\PCLoan.Library\PCLoan.Logic.Library.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Admin\" />
+    <ProjectReference Include="..\PCLoan.Logic.Library\PCLoan.Logic.Library.csproj" />
   </ItemGroup>
 
 </Project>

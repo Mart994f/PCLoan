@@ -1,26 +1,22 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
-namespace PCLoan.Presentation.Web.Models
+namespace PCLoan.Logic.Library.Models
 {
-    public class LogModel
+    public class LogModelDTO
     {
         public int Id { get; set; }
 
-        [Display(Name = "Dato og tid")]
         public DateTime Timestamp { get; set; }
 
         public int UserId { get; set; }
 
-        [Display(Name = "Bruger")]
         public string Username { get; set; }
 
         public int? ComputerId { get; set; }
 
-        [Display(Name = "Computernavn")]
         public string Computername { get; set; }
 
-        [Display(Name = "Beskrivelse")]
         public string Description { get; set; }
     }
 }
