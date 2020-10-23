@@ -60,7 +60,8 @@
             keysPressed[event.key] = true;
 
             if (keysPressed['Control'] && keysPressed['Alt'] && event.key == 'F9') {
-                window.location = "https://localhost:44367/admin/index";
+                document.cookie = "Kiosk=False; path=/;";
+                window.location = "https://localhost:44367/login/login";
             }
         });
 

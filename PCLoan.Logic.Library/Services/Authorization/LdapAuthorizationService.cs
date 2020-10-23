@@ -72,7 +72,7 @@ namespace PCLoan.Logic.Library.Services
                     model.Role = Role.Employee;
                 }
                 // Else if the user is member of "zbc-slbr-itskp",
-                else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "zbc-slbr-itskp")) // TODO: Update group name
+                else if (model.UserPrincipal != null && model.UserPrincipal.IsMemberOf(_principalContext, IdentityType.SamAccountName, "zbc-slbr-itskp"))       
                 {
                     // then give the user a role of Administrator
                     model.Role = Role.Administrator;

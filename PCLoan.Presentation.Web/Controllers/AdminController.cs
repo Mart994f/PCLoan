@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PCLoan.Logic.Library.Controllers;
 using PCLoan.Logic.Library.Exceptions;
@@ -9,12 +8,10 @@ using PCLoan.Logic.Library.Values;
 using PCLoan.Presentation.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 
 namespace PCLoan.Presentation.Web.Controllers
 {
-    // TODO: Re-enable authorize
-    //[Authorize(Roles = Role.Administrator)]
+    [Authorize(Roles = Role.EmployeeOrAdministrator)]
     public class AdminController : Controller
     {
         private IAdminController _adminController;
@@ -25,7 +22,8 @@ namespace PCLoan.Presentation.Web.Controllers
 
         private ILogController _logController;
 
-        public AdminController(IAdminController adminController, IMapper mapper, IComputerController computerController, ILogController logController)
+        public AdminController(IAdminController adminController, IMapper mapper, IComputerController computerController,
+                               ILogController logController)
         {
             _computerController = computerController;
             _logController = logController;
@@ -53,9 +51,11 @@ namespace PCLoan.Presentation.Web.Controllers
         // GET: AdminController/Create
         public ActionResult Create()
         {
-            ComputerModel model = new ComputerModel();
+            ComputerModel model = new ComputerModel
+            {
+                States = _mapper.Map<List<StateModel>>(_adminController.GetStates())
+            };
 
-            model.States = _mapper.Map<List<StateModel>>(_adminController.GetStates());
             model.States.Remove(model.States.Find(s => s.Id == (int)State.Lend));
 
             return View(model);
@@ -119,11 +119,11 @@ namespace PCLoan.Presentation.Web.Controllers
         // POST: AdminController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int computerId, ComputerModel model)
+        public ActionResult Delete(int id, ComputerModel model)
         {
             try
             {
-                _adminController.DeactivateComputer(int.Parse(User.FindFirst("Id").Value), computerId);
+                _adminController.DeactivateComputer(int.Parse(User.FindFirst("Id").Value), id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -134,10 +134,14 @@ namespace PCLoan.Presentation.Web.Controllers
             }
         }
 
+        [Authorize(Roles = Role.Employee)]
         public ActionResult Log()
         {
             Tuple<List<LogModel>, SearchModel> tuple;
-            SearchModel searchModel = new SearchModel { Computers = _mapper.Map<List<ComputerModel>>(_adminController.GetComputersWithLoan()) };
+            SearchModel searchModel = new SearchModel 
+            { 
+                Computers = _mapper.Map<List<ComputerModel>>(_adminController.GetComputersWithLoan())
+            };
 
             tuple = new Tuple<List<LogModel>, SearchModel>(_mapper.Map<List<LogModel>>(_logController.GetLogs()), searchModel);
 
@@ -146,11 +150,15 @@ namespace PCLoan.Presentation.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.Employee)]
         public ActionResult SearchUser(string username)
         {
             List<LogModel> logs;
             Tuple<List<LogModel>, SearchModel> tuple;
-            SearchModel searchModel = new SearchModel { Computers = _mapper.Map<List<ComputerModel>>(_adminController.GetComputersWithLoan()) };
+            SearchModel searchModel = new SearchModel 
+            {
+                Computers = _mapper.Map<List<ComputerModel>>(_adminController.GetComputersWithLoan()) 
+            };
 
             if (string.IsNullOrEmpty(username))
             {
@@ -168,11 +176,15 @@ namespace PCLoan.Presentation.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Role.Employee)]
         public ActionResult SearchComputer(int computerId)
         {
             List<LogModel> logs;
             Tuple<List<LogModel>, SearchModel> tuple;
-            SearchModel searchModel = new SearchModel { Computers = _mapper.Map<List<ComputerModel>>(_adminController.GetComputersWithLoan()) };
+            SearchModel searchModel = new SearchModel 
+            { 
+                Computers = _mapper.Map<List<ComputerModel>>(_adminController.GetComputersWithLoan())
+            };
 
             if (computerId <= 0)
             {
@@ -193,13 +205,6 @@ namespace PCLoan.Presentation.Web.Controllers
             Response.Cookies.Append("Kiosk", true.ToString());
 
             return RedirectToAction("Index", "Computer");
-        }
-
-        public ActionResult CloseKiosk()
-        {
-            Response.Cookies.Delete("Kiosk");
-
-            return RedirectToAction("Index");
         }
     }
 }

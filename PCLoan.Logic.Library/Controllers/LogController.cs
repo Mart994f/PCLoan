@@ -39,7 +39,7 @@ namespace PCLoan.Logic.Library.Controllers
         {
             List<LogModelDTO> logs = _mapper.Map<List<LogModelDTO>>(_logRepository.GetAll());
 
-            logs = logs.FindAll(l => l.UserId == _userRepository.GetIdByname(username));
+            logs = logs.FindAll(l => l.UserId == _userRepository.GetIdByname(username.ToLower()));
 
             foreach (LogModelDTO log in logs)
             {

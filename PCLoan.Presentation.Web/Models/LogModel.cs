@@ -8,6 +8,7 @@ namespace PCLoan.Presentation.Web.Models
         public int Id { get; set; }
 
         [Display(Name = "Dato og tid")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}")]
         public DateTime Timestamp { get; set; }
 
         public int UserId { get; set; }

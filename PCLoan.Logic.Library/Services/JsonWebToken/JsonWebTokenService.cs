@@ -40,7 +40,7 @@ namespace PCLoan.Logic.Library.Services
             {
                 new Claim("Id", model.Id.ToString()),
                 new Claim("Username", model.UserName),
-                new Claim("Role", model.Role)
+                new Claim("role", model.Role)
             };
 
             JwtSecurityToken securityToken = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Issuer"], claims, notBefore: DateTime.Now, expires: DateTime.Now.AddMinutes(60), signingCredentials: credentials);

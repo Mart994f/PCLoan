@@ -10,7 +10,6 @@ using System.Linq;
 
 namespace PCLoan.Logic.Library.Controllers
 {
-    // TODO: Implement logging to log
     public class AdminController : IAdminController
     {
         #region Private Fields

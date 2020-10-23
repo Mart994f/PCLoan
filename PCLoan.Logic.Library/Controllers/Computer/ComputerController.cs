@@ -177,14 +177,7 @@ namespace PCLoan.Logic.Library.Controllers
         /// <param name="loanId">The id of the loan to be returned</param>
         private void ReturnLoan(int loanId)
         {
-            try
-            {
-                _loanRepository.ReturnLoan(loanId, DateTime.UtcNow);
-            }
-            catch (Exception ex)
-            {
-                // TODO: Implement exception handling
-            }
+            _loanRepository.ReturnLoan(loanId, DateTime.UtcNow);
         }
 
         /// <summary>
@@ -194,14 +187,7 @@ namespace PCLoan.Logic.Library.Controllers
         /// <param name="stateId">Id of the new state</param>
         private void UpdateComputerState(int computerId, State stateId)
         {
-            try
-            {
-                _computerRepository.UpdateState(computerId, (int)stateId);
-            }
-            catch (Exception ex)
-            {
-                // TODO: Implement exception handling
-            }
+            _computerRepository.UpdateState(computerId, (int)stateId);
         }
 
         #endregion

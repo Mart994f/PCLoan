@@ -69,6 +69,8 @@ namespace PCLoan.Logic.Library.Controllers
             // If the user dosnt exsist
             if (!_userRepository.Exsist(model.UserName))
             {
+                model.UserName = model.UserName.ToLower();
+
                 // Add the user to the database
                 _userRepository.Insert(_mapper.Map<UserModelDAO>(model));
             }
